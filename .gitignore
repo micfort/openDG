@@ -4,3 +4,4 @@
 docs/latex
 docs/html
 cmake-build-debug
+cmake-build-release
