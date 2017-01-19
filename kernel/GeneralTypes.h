@@ -35,10 +35,38 @@
 
 #include <memory>
 #include <vector>
+#include <Eigen/Dense>
+
 namespace OpenPSTD
 {
     namespace Kernel
     {
+        const float NODETOL = 1e-8f;
+
+        /**
+         * short hand for a Vector
+         */
+        template<typename SimpleType>
+        using VectorX = Eigen::Matrix<SimpleType, Eigen::Dynamic, 1>;
+
+        /**
+         * short hand for a Matrix
+         */
+        template<typename SimpleType>
+        using MatrixX = Eigen::Matrix<SimpleType, Eigen::Dynamic, Eigen::Dynamic>;
+
+        /**
+         * short hand for a 1D Array
+         */
+        template<typename SimpleType>
+        using ArrayX = Eigen::Array<SimpleType, Eigen::Dynamic, 1>;
+
+        /**
+         * short hand for a 2D Array
+         */
+        template<typename SimpleType>
+        using ArrayXX = Eigen::Array<SimpleType, Eigen::Dynamic, Eigen::Dynamic>;
+
         using PSTD_FRAME_UNIT = float;
         using PSTD_FRAME = std::vector<PSTD_FRAME_UNIT>;
         using PSTD_FRAME_PTR = std::shared_ptr<PSTD_FRAME>;
@@ -46,6 +74,10 @@ namespace OpenPSTD
         using PSTD_RECEIVER_DATA_UNIT = float;
         using PSTD_RECEIVER_DATA = std::vector<PSTD_FRAME_UNIT>;
         using PSTD_RECEIVER_DATA_PTR = std::shared_ptr<PSTD_FRAME>;
+
+        using DG_FRAME_UNIT = float;
+        using DG_FRAME = MatrixX<DG_FRAME_UNIT>;
+        using DG_FRAME_PTR = std::shared_ptr<DG_FRAME>;
     }
 }
 

@@ -32,7 +32,7 @@
 #ifndef OPENPSTD_NODES_H_H
 #define OPENPSTD_NODES_H_H
 
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "WarpFactor.h"
 
 namespace OpenPSTD

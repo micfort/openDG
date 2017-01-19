@@ -33,7 +33,7 @@
 #define OPENPSTD_VANDERMONDE_H
 
 #include <Eigen/Dense>
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "Jacobi.h"
 #include "Coordinates.h"
 #include "Simplex.h"

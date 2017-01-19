@@ -54,7 +54,7 @@ namespace OpenPSTD
             class SimpleDG2DBuilder
             {
             public:
-                std::vector<OpenPSTD::Kernel::DG::VectorX<SimpleType>> Vertices;
+                std::vector<OpenPSTD::Kernel::VectorX<SimpleType>> Vertices;
                 std::vector<std::vector<int>> Elements;
 
                 std::shared_ptr<OpenPSTD::Kernel::DG::System2D<SimpleType, DEElementStore>> Build(

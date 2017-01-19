@@ -18,33 +18,52 @@
 
 //////////////////////////////////////////////////////////////////////////
 //
-// Date: 8-12-2016
+// Date: 17-1-2017
 //
 //
 // Authors: M. R. Fortuin
 //
 //
-// Purpose:
+// Purpose: A Kernel implemenation that uses DG to solve the the problem.
 //
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "GeometricFactors.h"
+#ifndef OPENPSTD_DGKERNEL_H
+#define OPENPSTD_DGKERNEL_H
 
-using namespace OpenPSTD::Kernel;
-using namespace OpenPSTD::Kernel::DG;
+#include "KernelInterface.h"
+#include "DG/DG2D.h"
+#include "DG/RK.h"
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_J(const MatrixX<float>& x, const MatrixX<float>& Dr);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_J(const MatrixX<double>& x, const MatrixX<double>& Dr);
+namespace OpenPSTD
+{
+    namespace Kernel
+    {
+        class DGKernel : public KernelInterface, public DG::OutputInterface<float>,
+                         private std::enable_shared_from_this<DGKernel>
+        {
+        private:
+            std::shared_ptr<DG::System2D<float>> system;
+            std::shared_ptr<DG::RK<float>> RK;
+            float renderTime;
+            OpenPSTD::Kernel::SimulationMetadata metadata;
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<float>& J);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<double>& J);
+            std::shared_ptr<OpenPSTD::Kernel::KernelCallback> callback;
+        public:
+            void initialize_kernel(std::shared_ptr<PSTDConfiguration> config,
+                                   std::shared_ptr<KernelCallbackLog> callbackLog) override;
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<float>& x, const MatrixX<float>& Dr);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<double>& x, const MatrixX<double>& Dr);
+            void run(std::shared_ptr<KernelCallback> callback) override;
 
-template struct GeometricFactors2DResult<float>;
-template struct GeometricFactors2DResult<double>;
+            SimulationMetadata get_metadata() override;
 
-template GeometricFactors2DResult<float> OpenPSTD::Kernel::DG::GeometricFactors2D(const MatrixX<float>& x, const MatrixX<float>& y, const MatrixX<float>& Dr, const MatrixX<float>& Ds);
-template GeometricFactors2DResult<double> OpenPSTD::Kernel::DG::GeometricFactors2D(const MatrixX<double>& x, const MatrixX<double>& y, const MatrixX<double>& Dr, const MatrixX<double>& Ds);
+            void WriteMetadata(std::string name, MatrixX<float> data) override;
+
+            void WriteData(int name, int index, MatrixX<float> state) override;
+        };
+    }
+}
+
+
+#endif //OPENPSTD_DGKERNEL_H

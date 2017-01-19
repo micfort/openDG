@@ -36,7 +36,7 @@
 #include <vector>
 #include "iostream"
 
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 
 namespace OpenPSTD
 {
@@ -78,6 +78,7 @@ namespace OpenPSTD
                 virtual void SetOutput(std::shared_ptr<OutputInterface<SimpleType>> output){this->output = output;};
                 virtual void ComputeTimeStep(SimpleType deltaTime) = 0;
                 virtual void Calculate(SimpleType FinalTime) = 0;
+                virtual int GetTimeStepCount(SimpleType FinalTime) { return ceil(FinalTime/bb->GetMaxDT()); }
             };
 
             template<typename SimpleType>

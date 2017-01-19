@@ -31,6 +31,7 @@
 
 #include "Lift.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template MatrixX<float> OpenPSTD::Kernel::DG::Lift1D(int Np, int NFaces, MatrixX<float> V);

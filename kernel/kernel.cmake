@@ -15,7 +15,8 @@ SET(SOURCE_FILES_LIB
         kernel/Solver.cpp
         kernel/core/Geometry.cpp
         kernel/core/WisdomCache.cpp
-        kernel/KernelInterface.cpp)
+        kernel/KernelInterface.cpp
+        kernel/EigenMatrixSerialization.h)
 
 # DG
 SET(SOURCE_FILES_LIB ${SOURCE_FILES_LIB}
@@ -37,7 +38,11 @@ SET(SOURCE_FILES_LIB ${SOURCE_FILES_LIB}
         kernel/DG/Simplex.cpp
         kernel/DG/Vandermonde.cpp
         kernel/DG/WarpFactor.cpp
+        kernel/DGKernel.cpp
         )
+
+SET(SOURCE_FILES_LIB ${SOURCE_FILES_LIB}
+        kernel/HybridKernel.cpp)
 
 # Mock
 SET(SOURCE_FILES_LIB ${SOURCE_FILES_LIB}

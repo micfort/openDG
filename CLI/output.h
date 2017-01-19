@@ -25,6 +25,8 @@ namespace OpenPSTD
 
             virtual void WriteSample(int startSample, int receiver, std::vector<float> data) override;
 
+            void WriteDGFrame(int frame, Kernel::DG_FRAME_PTR data) override;
+
             virtual void Fatal(std::string message) override;
 
             virtual void Error(std::string message) override;

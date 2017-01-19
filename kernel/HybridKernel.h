@@ -18,55 +18,25 @@
 
 //////////////////////////////////////////////////////////////////////////
 //
-// Date: 31-5-2016
+// Date: 17-1-2017
 //
 //
 // Authors: M. R. Fortuin
 //
 //
-// Purpose:
+// Purpose: A Kernel implemenation that uses DG and PSTD to solve the the problem.
 //
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef OPENPSTD_DG_GENERALTYPES_H
-#define OPENPSTD_DG_GENERALTYPES_H
+#ifndef OPENPSTD_HYBRIDKERNEL_H
+#define OPENPSTD_HYBRIDKERNEL_H
 
-#include <Eigen/Dense>
 
-namespace OpenPSTD
+class HybridKernel
 {
-    namespace Kernel
-    {
-        namespace DG
-        {
-            const float NODETOL = 1e-8f;
 
-            /**
-             * short hand for a Vector
-             */
-            template<typename SimpleType>
-            using VectorX = Eigen::Matrix<SimpleType, Eigen::Dynamic, 1>;
+};
 
-            /**
-             * short hand for a Matrix
-             */
-            template<typename SimpleType>
-            using MatrixX = Eigen::Matrix<SimpleType, Eigen::Dynamic, Eigen::Dynamic>;
 
-            /**
-             * short hand for a 1D Array
-             */
-            template<typename SimpleType>
-            using ArrayX = Eigen::Array<SimpleType, Eigen::Dynamic, 1>;
-
-            /**
-             * short hand for a 2D Array
-             */
-            template<typename SimpleType>
-            using ArrayXX = Eigen::Array<SimpleType, Eigen::Dynamic, Eigen::Dynamic>;
-        }
-    }
-}
-
-#endif //OPENPSTD_GENERALTYPES_H
+#endif //OPENPSTD_HYBRIDKERNEL_H

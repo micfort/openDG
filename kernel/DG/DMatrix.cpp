@@ -31,6 +31,7 @@
 
 #include "DMatrix.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template MatrixX<float> OpenPSTD::Kernel::DG::DMatrix1D(int N, VectorX<float> r, MatrixX<float> V);

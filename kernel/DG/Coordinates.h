@@ -29,7 +29,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 
 #ifndef OPENPSTD_COORDINATES_H
 #define OPENPSTD_COORDINATES_H

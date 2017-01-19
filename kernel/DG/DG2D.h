@@ -38,7 +38,7 @@
 #include <vector>
 #include <iostream>
 
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "RK.h"
 #include "Nodes.h"
 #include "Coordinates.h"

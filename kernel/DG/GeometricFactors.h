@@ -33,7 +33,7 @@
 #define OPENPSTD_GEOMETRICFACTORS_H
 
 #include <Eigen/Dense>
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 
 namespace OpenPSTD
 {

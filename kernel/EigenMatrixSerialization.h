@@ -18,33 +18,45 @@
 
 //////////////////////////////////////////////////////////////////////////
 //
-// Date: 8-12-2016
+// Date: 19-1-2017
 //
 //
 // Authors: M. R. Fortuin
 //
 //
-// Purpose:
+// Purpose: this file is used to serialize matrices to boost archives
 //
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "GeometricFactors.h"
+#ifndef OPENPSTD_EIGENMATRIXSERIALIZATION_H
+#define OPENPSTD_EIGENMATRIXSERIALIZATION_H
 
-using namespace OpenPSTD::Kernel;
-using namespace OpenPSTD::Kernel::DG;
+friend class boost::serialization::access;
+template<class Archive>
+void save(Archive & ar, const unsigned int version) const {
+  derived().eval();
+  const Index rows = derived().rows(), cols = derived().cols();
+  ar & rows;
+  ar & cols;
+  for (Index j = 0; j < cols; ++j )
+    for (Index i = 0; i < rows; ++i )
+      ar & derived().coeff(i, j);
+}
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_J(const MatrixX<float>& x, const MatrixX<float>& Dr);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_J(const MatrixX<double>& x, const MatrixX<double>& Dr);
+template<class Archive>
+void load(Archive & ar, const unsigned int version) {
+  Index rows, cols;
+  ar & rows;
+  ar & cols;
+  if (rows != derived().rows() || cols != derived().cols() )
+    derived().resize(rows, cols);
+  ar & boost::serialization::make_array(derived().data(), derived().size());
+}
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<float>& J);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<double>& J);
+template<class Archive>
+void serialize(Archive & ar, const unsigned int file_version) {
+  boost::serialization::split_member(ar, *this, file_version);
+}
 
-template MatrixX<float> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<float>& x, const MatrixX<float>& Dr);
-template MatrixX<double> OpenPSTD::Kernel::DG::GeometricFactors1D_rx(const MatrixX<double>& x, const MatrixX<double>& Dr);
-
-template struct GeometricFactors2DResult<float>;
-template struct GeometricFactors2DResult<double>;
-
-template GeometricFactors2DResult<float> OpenPSTD::Kernel::DG::GeometricFactors2D(const MatrixX<float>& x, const MatrixX<float>& y, const MatrixX<float>& Dr, const MatrixX<float>& Ds);
-template GeometricFactors2DResult<double> OpenPSTD::Kernel::DG::GeometricFactors2D(const MatrixX<double>& x, const MatrixX<double>& y, const MatrixX<double>& Dr, const MatrixX<double>& Ds);
+#endif //OPENPSTD_EIGENMATRIXSERIALIZATION_H

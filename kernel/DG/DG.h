@@ -38,7 +38,7 @@
 #include <vector>
 #include <iostream>
 
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "Jacobi.h"
 #include "Vandermonde.h"
 #include "DMatrix.h"

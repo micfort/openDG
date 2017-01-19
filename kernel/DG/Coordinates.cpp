@@ -31,6 +31,7 @@
 
 #include "Coordinates.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template ArrayXX<double> OpenPSTD::Kernel::DG::xytors(ArrayXX<double> xy);

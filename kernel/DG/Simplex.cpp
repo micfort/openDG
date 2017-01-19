@@ -31,6 +31,7 @@
 
 #include "Simplex.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template VectorX<float> OpenPSTD::Kernel::DG::Simplex2DP(ArrayXX<float> ab, int i, int j);

@@ -31,6 +31,7 @@
 
 #include "WarpFactor.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template ArrayX<float> OpenPSTD::Kernel::DG::WarpFactor(int N, VectorX<float> rout);

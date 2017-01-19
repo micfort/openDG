@@ -26,6 +26,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <boost/serialization/array.hpp>
+#define EIGEN_DENSEBASE_PLUGIN "kernel/EigenMatrixSerialization.h"
+
 #include "PSTDFile.h"
 
 extern "C"
@@ -47,7 +50,7 @@ namespace OpenPSTD
     {
         using namespace std;
 
-#define PSTD_FILE_VERSION 4
+#define PSTD_FILE_VERSION 101
 
 #define PSTD_FILE_PREFIX_SCENE 1
 

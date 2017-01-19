@@ -11,7 +11,6 @@
 #include <QVector3D>
 #include <Eigen/Core>
 
-
 namespace OpenPSTD {
     namespace Kernel {
         /**
@@ -218,6 +217,8 @@ namespace OpenPSTD {
             std::vector<QVector3D> Speakers;
             std::vector<QVector3D> Receivers;
             std::vector<DomainConf> Domains;
+            std::vector<Eigen::VectorXf> DGVertices;
+            std::vector<std::vector<int>> DGIndices;
 
             /**
              * Obtain a default configuration with decent values for a simulation run
@@ -237,6 +238,8 @@ namespace OpenPSTD {
                 ar & Speakers;
                 ar & Receivers;
                 ar & Domains;
+                ar & DGVertices;
+                ar & DGIndices;
             }
         };
 
@@ -301,6 +304,13 @@ namespace OpenPSTD {
              * @param data: a set of data points
              */
             virtual void WriteSample(int startSample, int receiver, std::vector<float> data) = 0;
+
+            /**
+             * Return pressure data of scene to callback handler for the DG data.
+             * @param frame: Positive integer corresponding to time step of data.
+             * @param data: matrix of pressure data.
+             */
+            virtual void WriteDGFrame(int frame, DG_FRAME_PTR data) = 0;
         };
 
         /**
@@ -324,6 +334,15 @@ namespace OpenPSTD {
              * In the "inner" vectors, v[0],v[1],v[2] correspond to size x,y,z.
              */
             std::vector<std::vector<int>> DomainPositions;
+
+            /**
+             * The X position of the dg nodes
+             */
+            Eigen::MatrixXf DGXPositions;
+            /**
+             * The Y position of the dg nodes
+             */
+            Eigen::MatrixXf DGYPositions;
         };
 
         /**

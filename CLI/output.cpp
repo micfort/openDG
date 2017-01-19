@@ -65,5 +65,10 @@ namespace OpenPSTD
                 std::cout << message << std::endl;
             }
         }
+
+        void CLIOutput::WriteDGFrame(int frame, DG_FRAME_PTR data)
+        {
+
+        }
     }
 }

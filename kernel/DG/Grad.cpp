@@ -31,6 +31,7 @@
 
 #include "Grad.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template Grad2DResult<float> OpenPSTD::Kernel::DG::Grad2D(

@@ -31,6 +31,7 @@
 
 #include "Jacobi.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template JacobiGQResult<float> OpenPSTD::Kernel::DG::JacobiGQ(float alpha, float beta, int N, bool sort);

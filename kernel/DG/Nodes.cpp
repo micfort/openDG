@@ -31,6 +31,7 @@
 
 #include "Nodes.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template ArrayXX<float> OpenPSTD::Kernel::DG::Nodes2D(int N);

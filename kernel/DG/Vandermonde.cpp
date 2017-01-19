@@ -31,6 +31,7 @@
 
 #include "Vandermonde.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 
 template MatrixX<float> OpenPSTD::Kernel::DG::Vandermonde1D(int N, VectorX<float> r);

@@ -33,7 +33,7 @@
 #define OPENPSTD_DMATRIX_H
 
 #include <Eigen/Dense>
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "Vandermonde.h"
 
 namespace OpenPSTD

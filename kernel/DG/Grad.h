@@ -34,7 +34,7 @@
 
 #include <cmath>
 #include <Eigen/Dense>
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 
 namespace OpenPSTD
 {

@@ -33,7 +33,7 @@
 #define OPENPSTD_WARPFACTOR_H
 
 #include <Eigen/Dense>
-#include "GeneralTypes.h"
+#include "../GeneralTypes.h"
 #include "Vandermonde.h"
 #include "Jacobi.h"
 

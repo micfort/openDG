@@ -105,7 +105,6 @@ namespace boost {
             v.setY(y);
             v.setZ(z);
         }
-
     } // namespace serialization
 } // namespace boost
 
