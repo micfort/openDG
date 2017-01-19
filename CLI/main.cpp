@@ -594,6 +594,7 @@ namespace OpenPSTD
 
         int TestCommand::execute(int argc, const char **argv)
         {
+            using namespace Kernel;
             using namespace Kernel::DG;
 
             int N = 5;
@@ -641,7 +642,7 @@ int main(int argc, const char *argv[])
             if (command.compare(commands[i]->GetName()) == 0)
             {
                 return commands[i]->execute(argc - 1, argv + 1);
-                //one less argument, specificaly the first, that is the reason of the +1
+                //one less argument, specifically the first, that is the reason of the +1
             }
         }
     }
