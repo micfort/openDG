@@ -37,6 +37,7 @@
 #include <kernel/DG/Vandermonde.h>
 #include <kernel/DG/Jacobi.h>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

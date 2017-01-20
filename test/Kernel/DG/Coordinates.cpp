@@ -35,6 +35,7 @@
 #include <kernel/DG/Coordinates.h>
 #include <iostream>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

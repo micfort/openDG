@@ -38,6 +38,7 @@
 #include <kernel/DG/RK.h>
 #include <kernel/DG/Advec.h>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

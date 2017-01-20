@@ -36,6 +36,7 @@
 #include <boost/test/unit_test.hpp>
 #include <kernel/DG/DMatrix.h>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

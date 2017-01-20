@@ -36,6 +36,7 @@
 #include <boost/test/unit_test.hpp>
 #include <kernel/DG/Jacobi.h>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

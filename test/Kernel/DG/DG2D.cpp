@@ -43,6 +43,7 @@
 
 #include "Macros.h"
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;

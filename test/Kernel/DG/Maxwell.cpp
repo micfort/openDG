@@ -38,6 +38,7 @@
 #include <kernel/DG/Maxwell.h>
 #include <math.h>
 
+using namespace OpenPSTD::Kernel;
 using namespace OpenPSTD::Kernel::DG;
 using namespace std;
 using namespace Eigen;
