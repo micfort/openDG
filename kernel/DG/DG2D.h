@@ -152,6 +152,7 @@ namespace OpenPSTD
                         result.push_back(MatrixX<SimpleType>(this->GetNp(), this->Element.size()));
                     }
 
+                    #pragma omp parallel for
                     for(int i = 0; i < Element.size(); i++)
                     {
                         auto ElementRHS = this->_DE->CalculateRHS(this->Element[i], this->shared_from_this(), time);

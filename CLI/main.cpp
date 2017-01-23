@@ -321,7 +321,8 @@ namespace OpenPSTD
                 std::unique_ptr<Shared::PSTDFile> file = Shared::PSTDFile::Open(filename);
                 auto conf = file->GetSceneConf();
 
-                GeometryImport import(unique_ptr<ifstream>(new ifstream(geofilename)));
+                unique_ptr<ifstream> geofile = unique_ptr<ifstream>(new ifstream(geofilename));
+                GeometryImport import(std::move(geofile));
                 conf->Domains = *import.PSTDDomains;
                 conf->DGVertices = *import.DGVertices;
                 conf->DGIndices = *import.DGIndices;
