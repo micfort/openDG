@@ -54,6 +54,8 @@ void OpenPSTD::Kernel::DGKernel::initialize_kernel(std::shared_ptr<OpenPSTD::Ker
     this->RK->SetBB(this->system);
     this->RK->SetOutput(this->shared_from_this());
     this->renderTime = config->Settings.GetRenderTime();
+
+    callbackLog->Info("Simulation system initialized");
 }
 
 void OpenPSTD::Kernel::DGKernel::run(std::shared_ptr<OpenPSTD::Kernel::KernelCallback> callback)
@@ -84,8 +86,8 @@ void OpenPSTD::Kernel::DGKernel::WriteMetadata(std::string name, MatrixX<float> 
 
 void OpenPSTD::Kernel::DGKernel::WriteData(int name, int index, MatrixX<float> state)
 {
-    callback->Info("Calculated frame " + boost::lexical_cast<std::string>(index));
-    DG_FRAME_PTR data = std::make_shared<DG_FRAME>();
+    callback->Info("Calculated frame " + boost::lexical_cast<std::string>(index) + " for " + boost::lexical_cast<std::string>(name));
+    DG_FRAME_PTR data = std::make_shared<DG_FRAME>(state.rows(), state.cols());
     *data = state;
     this->callback->WriteDGFrame(index, data);
 }

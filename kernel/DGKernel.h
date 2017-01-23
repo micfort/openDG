@@ -41,7 +41,7 @@ namespace OpenPSTD
     namespace Kernel
     {
         class DGKernel : public KernelInterface, public DG::OutputInterface<float>,
-                         private std::enable_shared_from_this<DGKernel>
+                         public std::enable_shared_from_this<DGKernel>
         {
         private:
             std::shared_ptr<DG::System2D<float>> system;

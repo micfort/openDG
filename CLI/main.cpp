@@ -26,6 +26,7 @@
 
 #include <kernel/PSTDKernel.h>
 #include <kernel/MockKernel.h>
+#include <kernel/DGKernel.h>
 #include <kernel/DG/DG2D.h>
 #include <kernel/DG/LEE2D.h>
 #include <kernel/DG/DG2DBuilders.h>
@@ -455,6 +456,8 @@ namespace OpenPSTD
                         ("multithreaded,m", "Use the multi-threaded solver")
                         ("gpu-accelerated,g", "Use the gpu for the calculations")
                         ("mock,M", "Use the mock kernel(only useful for development)")
+                        ("hybrid,H", "Use the hybrid kernel")
+                        ("dg,D", "Use the DG kernel")
                         ("debug", "shows debug information(only useful for development)")
                     //("write-plot,p", "Plots are written to the output directory")
                     //("write-array,a", "Arrays are written to the output directory")
@@ -496,6 +499,18 @@ namespace OpenPSTD
                             "using normal version" << std::endl;
                 }
 
+                if (vm.count("hybrid") > 0 && (vm.count("multithreaded") > 0 || vm.count("gpu-accelerated") > 0))
+                {
+                    std::cout << "warning: no multithreaded or gpu accelerated versions of the hybrid kernel, "
+                            "using normal version" << std::endl;
+                }
+
+                if (vm.count("dg") > 0 && (vm.count("multithreaded") > 0 || vm.count("gpu-accelerated") > 0))
+                {
+                    std::cout << "warning: no multithreaded or gpu accelerated versions of the dg kernel, "
+                            "using normal version" << std::endl;
+                }
+
                 std::string filename = vm["scene-file"].as<std::string>();
 
                 //open file (and make a shared_ptr of the unique_ptr)
@@ -508,16 +523,24 @@ namespace OpenPSTD
                 std::cout << "initilize new results" << std::endl;
                 file->InitializeResults();
                 //create kernel
-                std::unique_ptr<Kernel::KernelInterface> kernel;
+                std::shared_ptr<Kernel::KernelInterface> kernel;
                 if (vm.count("mock") > 0)
                 {
                     //use the mocking
-                    kernel = std::unique_ptr<Kernel::MockKernel>(new Kernel::MockKernel());
+                    kernel = std::shared_ptr<Kernel::MockKernel>(new Kernel::MockKernel());
+                }
+                else if(vm.count("hybrid") > 0)
+                {
+                    std::cerr << "Error: Not implemented" << std::endl;
+                }
+                else if(vm.count("dg") > 0)
+                {
+                    kernel = std::shared_ptr<Kernel::DGKernel>(new Kernel::DGKernel());
                 }
                 else
                 {
                     //use the real kernel
-                    kernel = std::unique_ptr<Kernel::PSTDKernel>(new Kernel::PSTDKernel(GPU, MCPU));
+                    kernel = std::shared_ptr<Kernel::PSTDKernel>(new Kernel::PSTDKernel(GPU, MCPU));
                 }
                 //create output
                 std::shared_ptr<Kernel::KernelCallback> output = std::make_shared<CLIOutput>(file, vm.count("debug") > 0);
