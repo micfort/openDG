@@ -38,7 +38,7 @@ using namespace std;
 
 OPENPSTD_SHARED_EXPORT GeometryImport::GeometryImport(unique_ptr<istream> input):
         DGIndices(make_shared<vector<vector<int>>>()),
-        DGVertices(make_shared<vector<Vector2f>>()),
+        DGVertices(make_shared<vector<VectorXf>>()),
         PSTDDomains(make_shared<vector<DomainConf>>())
 {
     std::string start, type, end;
@@ -79,7 +79,7 @@ OPENPSTD_SHARED_EXPORT GeometryImport::GeometryImport(unique_ptr<istream> input)
             this->DGVertices->reserve(count);
             for (int i = 0; i < count; ++i)
             {
-                Vector2f result;
+                VectorXf result(2);
                 float x, y;
                 *input >> x >> y;
                 result << x, y;

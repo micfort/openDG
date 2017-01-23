@@ -57,6 +57,16 @@ namespace OpenPSTD
             int execute(int argc, const char *argv[]) override;
         };
 
+        class ImportCommand : public Command
+        {
+        public:
+            std::string GetName() override;
+
+            std::string GetDescription() override;
+
+            int execute(int argc, const char *argv[]) override;
+        };
+
         class RunCommand : public Command
         {
         public:

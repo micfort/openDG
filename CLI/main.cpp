@@ -31,6 +31,7 @@
 #include <kernel/DG/DG2DBuilders.h>
 
 #include <shared/PSTDFile.h>
+#include <shared/GeometryImport.h>
 
 #include "edit.h"
 #include "output.h"
@@ -243,6 +244,11 @@ namespace OpenPSTD
             }
 
             std::cout << std::endl;
+            std::cout << "DG: " << std::endl;
+            std::cout << "  Vertices: " << SceneConf->DGVertices.size() << std::endl;
+            std::cout << "  Elements: " << SceneConf->DGIndices.size() << std::endl;
+
+            std::cout << std::endl;
             std::cout << "Domains: " << std::endl;
             for (int i = 0; i < SceneConf->Domains.size(); ++i)
             {
@@ -259,6 +265,80 @@ namespace OpenPSTD
                         << SceneConf->Domains[i].L.LR << std::endl;
                 std::cout << "    Right: Absorption " << SceneConf->Domains[i].R.Absorption << ", LR "
                         << SceneConf->Domains[i].R.LR << std::endl;
+            }
+        }
+
+        std::string ImportCommand::GetName()
+        {
+            return "import";
+        }
+
+        std::string ImportCommand::GetDescription()
+        {
+            return "import a geometric file";
+        }
+
+        int ImportCommand::execute(int argc, const char **argv)
+        {
+            using namespace Shared;
+            using namespace std;
+
+            po::variables_map vm;
+
+            try
+            {
+                po::options_description desc("Allowed options");
+                desc.add_options()
+                        ("help,h", "produce help message")
+                        ("geometric-file,g", po::value<std::string>(), "The geometric file that has to be used, if not specified the standard input is used")
+                        ("scene-file,f", po::value<std::string>(), "The scene file that has to be used (required)")
+                        ;
+
+                po::positional_options_description p;
+                p.add("scene-file", 1);
+
+                po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
+                po::notify(vm);
+
+                if (vm.count("help"))
+                {
+                    std::cout << desc << std::endl;
+                    return 0;
+                }
+
+                if (vm.count("scene-file") == 0)
+                {
+                    std::cerr << "scene file is required" << std::endl;
+                    std::cout << desc << std::endl;
+                    return 1;
+                }
+
+                std::string filename = vm["scene-file"].as<std::string>();
+                std::string geofilename = vm["geometric-file"].as<std::string>();
+
+                //open file
+                std::unique_ptr<Shared::PSTDFile> file = Shared::PSTDFile::Open(filename);
+                auto conf = file->GetSceneConf();
+
+                GeometryImport import(unique_ptr<ifstream>(new ifstream(geofilename)));
+                conf->Domains = *import.PSTDDomains;
+                conf->DGVertices = *import.DGVertices;
+                conf->DGIndices = *import.DGIndices;
+
+                file->SetSceneConf(conf);
+                file->Commit();
+
+                return 0;
+            }
+            catch (std::exception &e)
+            {
+                std::cerr << "error: " << e.what() << "\n";
+                return 1;
+            }
+            catch (...)
+            {
+                std::cerr << "Exception of unknown type!\n";
+                return 1;
             }
         }
 
@@ -629,6 +709,7 @@ int main(int argc, const char *argv[])
     std::vector<std::unique_ptr<Command>> commands;
     commands.push_back(std::unique_ptr<CreateCommand>(new CreateCommand()));
     commands.push_back(std::unique_ptr<ListCommand>(new ListCommand()));
+    commands.push_back(std::unique_ptr<ImportCommand>(new ImportCommand()));
     commands.push_back(std::unique_ptr<EditCommand>(new EditCommand()));
     commands.push_back(std::unique_ptr<RunCommand>(new RunCommand()));
     commands.push_back(std::unique_ptr<ExportCommand>(new ExportCommand()));

@@ -48,7 +48,7 @@ namespace OpenPSTD
         public:
             OPENPSTD_SHARED_EXPORT GeometryImport(std::unique_ptr<std::istream> input);
             std::shared_ptr<std::vector<std::vector<int>>> DGIndices;
-            std::shared_ptr<std::vector<Eigen::Vector2f>> DGVertices;
+            std::shared_ptr<std::vector<Eigen::VectorXf>> DGVertices;
             std::shared_ptr<std::vector<OpenPSTD::Kernel::DomainConf>> PSTDDomains;
         };
 
