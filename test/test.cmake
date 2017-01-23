@@ -40,6 +40,8 @@ else()
     else()
         message(STATUS "Test file: ALL")
 
+        # Shared test files
+        set(SOURCE_FILES_TEST ${SOURCE_FILES_TEST} test/Shared/GeometryImport.cpp )
         # GUI test files
         set(SOURCE_FILES_TEST ${SOURCE_FILES_TEST} test/GUI/Edges-test.cpp test/GUI/LongOperationRunner-test.cpp)
         # Kernel test files

@@ -2,7 +2,12 @@
 # Kernel library
 
 #general
-SET(SOURCE_FILES_SHARED_LIB shared/PSTDFile.cpp shared/InvalidationData.cpp shared/Colors.cpp shared/PSTDFileAccess.cpp)
+SET(SOURCE_FILES_SHARED_LIB
+        shared/PSTDFile.cpp
+        shared/InvalidationData.cpp
+        shared/Colors.cpp
+        shared/PSTDFileAccess.cpp
+        shared/GeometryImport.cpp)
 #export
 SET(SOURCE_FILES_SHARED_LIB ${SOURCE_FILES_SHARED_LIB}
         shared/export/Export.cpp shared/export/Image.cpp
