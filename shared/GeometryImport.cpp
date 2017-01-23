@@ -41,10 +41,14 @@ OPENPSTD_SHARED_EXPORT GeometryImport::GeometryImport(unique_ptr<istream> input)
         DGVertices(make_shared<vector<VectorXf>>()),
         PSTDDomains(make_shared<vector<DomainConf>>())
 {
-    std::string start, type, end;
     int count;
     while(!input->eof())
     {
+        while(input->peek() == '\r' || input->peek() == '\n')
+            input->get();
+        if(input->eof())
+            break;
+        std::string start, type, end;
         *input >> start;
         if (start != "start")
             throw ErrorInGeometryFileException();
@@ -55,8 +59,7 @@ OPENPSTD_SHARED_EXPORT GeometryImport::GeometryImport(unique_ptr<istream> input)
             this->PSTDDomains->reserve(count);
             for (int i = 0; i < count; ++i)
             {
-                float x, y, w, h, a_t, a_b, a_l, a_r;
-                bool LR_t, LR_b, LR_l, LR_r;
+                float x, y, w, h;
                 OpenPSTD::Kernel::DomainConf result;
                 *input >> x >> y >> w >> h;
                 result.TopLeft.setX(x);
@@ -114,5 +117,5 @@ OPENPSTD_SHARED_EXPORT GeometryImport::GeometryImport(unique_ptr<istream> input)
 
 OPENPSTD_SHARED_EXPORT const char* ErrorInGeometryFileException::what() const noexcept
 {
-    return "error";
+    return "file is not valid";
 }
