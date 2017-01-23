@@ -35,7 +35,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include <Shared/GeometryImport.h>
+#include <shared/GeometryImport.h>
 
 BOOST_AUTO_TEST_SUITE(Shared)
     BOOST_AUTO_TEST_SUITE(Shared_GeometryImport)
