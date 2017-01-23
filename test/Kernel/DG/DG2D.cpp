@@ -324,6 +324,278 @@ BOOST_AUTO_TEST_SUITE(DG)
             std::shared_ptr<System2D<double>> s;
         };
 
+        struct FixtureMaxwell025F {
+            void addVertex(double x, double y)
+            {
+                VectorX<float> p(2);
+                p << (float)x, (float)y;
+                builder.Vertices.push_back(p);
+            }
+
+            void addTriangle(int i1, int i2, int i3)
+            {
+                vector<int> t;
+                t.push_back(i1);
+                t.push_back(i2);
+                t.push_back(i3);
+                builder.Elements.push_back(t);
+            }
+
+            void setupGrid()
+            {
+                addVertex(-1.0000000000000000e+00,-1.0000000000000000e+00);
+                addVertex(+1.0000000000000000e+00,-1.0000000000000000e+00);
+                addVertex(-7.5000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(-5.0000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(-2.5000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(+0.0000000000000000e+00,-1.0000000000000000e+00);
+                addVertex(+2.5000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(+5.0000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(+7.5000000000000000e-01,-1.0000000000000000e+00);
+                addVertex(+1.0000000000000000e+00,+1.0000000000000000e+00);
+                addVertex(+1.0000000000000000e+00,-7.5000000000000000e-01);
+                addVertex(+1.0000000000000000e+00,-5.0000000000000000e-01);
+                addVertex(+1.0000000000000000e+00,-2.5000000000000000e-01);
+                addVertex(+1.0000000000000000e+00,+0.0000000000000000e+00);
+                addVertex(+1.0000000000000000e+00,+2.5000000000000000e-01);
+                addVertex(+1.0000000000000000e+00,+5.0000000000000000e-01);
+                addVertex(+1.0000000000000000e+00,+7.5000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,+1.0000000000000000e+00);
+                addVertex(+7.5000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(+5.0000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(+2.5000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(+0.0000000000000000e+00,+1.0000000000000000e+00);
+                addVertex(-2.5000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(-5.0000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(-7.5000000000000000e-01,+1.0000000000000000e+00);
+                addVertex(-1.0000000000000000e+00,+7.5000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,+5.0000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,+2.5000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,+0.0000000000000000e+00);
+                addVertex(-1.0000000000000000e+00,-2.5000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,-5.0000000000000000e-01);
+                addVertex(-1.0000000000000000e+00,-7.5000000000000000e-01);
+                addVertex(-8.2531548167799995e-01,-8.2446481953499995e-01);
+                addVertex(-8.1447951081699999e-01,+1.1502662607200000e-01);
+                addVertex(+8.2654860994400003e-01,-8.1983996105900003e-01);
+                addVertex(+8.2589313229000005e-01,+8.2611230877099995e-01);
+                addVertex(-8.2630725286300000e-01,+8.2389454592199995e-01);
+                addVertex(-7.9306332741999996e-01,-6.0823468114099999e-01);
+                addVertex(+5.9855245943299995e-01,-7.4356818359400001e-01);
+                addVertex(+7.5952461963100004e-01,+5.9603174654799995e-01);
+                addVertex(+6.1333801634600005e-01,+7.9706726033200004e-01);
+                addVertex(+7.9969221256199996e-01,-5.9944637520599997e-01);
+                addVertex(-5.9513419637800002e-01,-7.5916940637600006e-01);
+                addVertex(-6.1443954120199995e-01,+7.9281284762399995e-01);
+                addVertex(-7.6131295249300002e-01,+5.9004990528699996e-01);
+                addVertex(-7.8055674341900005e-01,-3.5645935224300002e-01);
+                addVertex(+7.9924896945000001e-01,-3.4882895196699998e-01);
+                addVertex(-3.7089050838299997e-01,+7.8345848574400001e-01);
+                addVertex(-3.3772265498199999e-01,-7.9297336391999995e-01);
+                addVertex(-7.8377252335799996e-01,+3.2411914689900001e-01);
+                addVertex(+3.6904495185100000e-01,+7.8814486770299996e-01);
+                addVertex(+3.3128361313799998e-01,-7.6271989621600000e-01);
+                addVertex(+7.7732720021000001e-01,+3.2829692989300002e-01);
+                addVertex(-7.7607913687399999e-01,-1.0044416652500000e-01);
+                addVertex(+7.8287963411700001e-01,+7.6938956584800003e-02);
+                addVertex(-1.2445055920100000e-01,+7.7826995109899999e-01);
+                addVertex(+8.3082201148599999e-01,-1.3404130331200001e-01);
+                addVertex(-1.2803440484900000e-01,-8.2470739682100003e-01);
+                addVertex(+8.2219540805400004e-02,-7.7207215827999998e-01);
+                addVertex(-5.7488450159500004e-01,-4.8235063221699997e-01);
+                addVertex(+1.2239659923500000e-01,+7.8030692193100004e-01);
+                addVertex(+1.5282936973000000e-01,-2.2641695246300000e-01);
+                addVertex(-3.9414778921900001e-01,-5.9841136727599997e-01);
+                addVertex(-1.3964833580300001e-01,-5.8530495339199995e-01);
+                addVertex(-5.4851380959399998e-01,-2.1058478135500000e-01);
+                addVertex(-4.9587956062200000e-01,+5.7525454908700002e-01);
+                addVertex(-5.9597777552700004e-01,+3.8133142108500001e-01);
+                addVertex(-5.5330874878100000e-01,+1.0415222367000000e-01);
+                addVertex(-2.4831870220200000e-01,+5.5614850741900002e-01);
+                addVertex(+4.9263794124100002e-01,+5.8706863997000003e-01);
+                addVertex(+5.8943261731100005e-01,+4.0251047548600000e-01);
+                addVertex(+5.3305643659000002e-01,+1.5127166039000001e-01);
+                addVertex(+2.4526620062999999e-01,+5.6490848086000001e-01);
+                addVertex(+5.9676415496000002e-01,-4.5113805867599999e-01);
+                addVertex(+4.0878674626099998e-01,-5.5827400326599996e-01);
+                addVertex(+1.5533403415200001e-01,-5.0362095877699997e-01);
+                addVertex(+5.9890241417599999e-01,-1.5196249048600000e-01);
+                addVertex(-9.8979211988000000e-04,+5.5245514562400000e-01);
+                addVertex(-3.3278480978899999e-01,-3.7324508848299998e-01);
+                addVertex(-3.8075170451000001e-01,+3.4068750158700001e-01);
+                addVertex(+3.7438339773899998e-01,+3.6312343024299998e-01);
+                addVertex(+3.7412933369399998e-01,-3.2181545978400000e-01);
+                addVertex(+3.2413164531900002e-01,-5.8317127791599997e-02);
+                addVertex(+2.6899802038100001e-01,+1.5646683626300001e-01);
+                addVertex(+1.2377069554600000e-01,+3.2514610305199998e-01);
+                addVertex(-1.2220006077900000e-01,+3.1735857513299998e-01);
+                addVertex(-2.9215686292499998e-01,-9.8824644726900002e-02);
+                addVertex(-2.6629787903699997e-01,+1.3265220380800000e-01);
+                addVertex(-7.3973031986299995e-02,-2.9107090650099998e-01);
+                addVertex(+1.1300995058400000e-02,+2.9488117310800002e-02);
+
+                addTriangle(31,0,32);
+                addTriangle(32,0,2);
+                addTriangle(8,1,34);
+                addTriangle(34,1,10);
+                addTriangle(16,9,35);
+                addTriangle(35,9,18);
+                addTriangle(24,17,36);
+                addTriangle(36,17,25);
+                addTriangle(31,32,37);
+                addTriangle(31,37,30);
+                addTriangle(8,34,38);
+                addTriangle(8,38,7);
+                addTriangle(16,35,39);
+                addTriangle(16,39,15);
+                addTriangle(35,18,40);
+                addTriangle(40,18,19);
+                addTriangle(34,10,41);
+                addTriangle(41,10,11);
+                addTriangle(32,2,42);
+                addTriangle(42,2,3);
+                addTriangle(24,36,43);
+                addTriangle(24,43,23);
+                addTriangle(36,25,44);
+                addTriangle(44,25,26);
+                addTriangle(30,37,45);
+                addTriangle(30,45,29);
+                addTriangle(41,11,46);
+                addTriangle(46,11,12);
+                addTriangle(23,43,47);
+                addTriangle(23,47,22);
+                addTriangle(42,3,48);
+                addTriangle(48,3,4);
+                addTriangle(44,26,49);
+                addTriangle(49,26,27);
+                addTriangle(40,19,50);
+                addTriangle(50,19,20);
+                addTriangle(7,38,51);
+                addTriangle(7,51,6);
+                addTriangle(15,39,52);
+                addTriangle(15,52,14);
+                addTriangle(29,45,53);
+                addTriangle(29,53,28);
+                addTriangle(14,52,54);
+                addTriangle(14,54,13);
+                addTriangle(49,27,33);
+                addTriangle(33,27,28);
+                addTriangle(46,12,56);
+                addTriangle(56,12,13);
+                addTriangle(22,47,55);
+                addTriangle(22,55,21);
+                addTriangle(6,51,58);
+                addTriangle(6,58,5);
+                addTriangle(48,4,57);
+                addTriangle(57,4,5);
+                addTriangle(50,20,60);
+                addTriangle(60,20,21);
+                addTriangle(33,28,53);
+                addTriangle(57,5,58);
+                addTriangle(60,21,55);
+                addTriangle(13,54,56);
+                addTriangle(35,40,39);
+                addTriangle(34,41,38);
+                addTriangle(37,32,42);
+                addTriangle(43,36,44);
+                addTriangle(45,37,59);
+                addTriangle(59,37,42);
+                addTriangle(42,48,62);
+                addTriangle(42,62,59);
+                addTriangle(48,57,63);
+                addTriangle(48,63,62);
+                addTriangle(53,45,64);
+                addTriangle(64,45,59);
+                addTriangle(47,43,65);
+                addTriangle(65,43,44);
+                addTriangle(44,49,66);
+                addTriangle(44,66,65);
+                addTriangle(49,33,67);
+                addTriangle(49,67,66);
+                addTriangle(55,47,68);
+                addTriangle(68,47,65);
+                addTriangle(40,50,69);
+                addTriangle(40,69,39);
+                addTriangle(52,39,70);
+                addTriangle(70,39,69);
+                addTriangle(54,52,71);
+                addTriangle(71,52,70);
+                addTriangle(50,60,72);
+                addTriangle(50,72,69);
+                addTriangle(41,46,73);
+                addTriangle(41,73,38);
+                addTriangle(51,38,74);
+                addTriangle(74,38,73);
+                addTriangle(58,51,75);
+                addTriangle(75,51,74);
+                addTriangle(46,56,76);
+                addTriangle(46,76,73);
+                addTriangle(67,33,53);
+                addTriangle(53,64,67);
+                addTriangle(63,57,58);
+                addTriangle(58,75,63);
+                addTriangle(76,56,54);
+                addTriangle(54,71,76);
+                addTriangle(72,60,77);
+                addTriangle(77,60,55);
+                addTriangle(55,68,77);
+                addTriangle(59,62,78);
+                addTriangle(59,78,64);
+                addTriangle(62,63,78);
+                addTriangle(68,65,79);
+                addTriangle(79,65,66);
+                addTriangle(66,67,79);
+                addTriangle(69,72,80);
+                addTriangle(69,80,70);
+                addTriangle(71,70,80);
+                addTriangle(73,76,81);
+                addTriangle(73,81,74);
+                addTriangle(75,74,81);
+                addTriangle(81,76,82);
+                addTriangle(82,76,71);
+                addTriangle(71,80,83);
+                addTriangle(71,83,82);
+                addTriangle(72,77,84);
+                addTriangle(72,84,80);
+                addTriangle(77,68,85);
+                addTriangle(77,85,84);
+                addTriangle(68,79,85);
+                addTriangle(64,78,86);
+                addTriangle(64,86,67);
+                addTriangle(79,67,87);
+                addTriangle(87,67,86);
+                addTriangle(78,63,88);
+                addTriangle(88,63,75);
+                addTriangle(75,81,61);
+                addTriangle(75,61,88);
+                addTriangle(83,80,84);
+                addTriangle(79,87,85);
+                addTriangle(78,88,86);
+                addTriangle(61,81,82);
+                addTriangle(87,86,89);
+                addTriangle(89,86,88);
+                addTriangle(88,61,89);
+                addTriangle(82,83,89);
+                addTriangle(82,89,61);
+                addTriangle(84,85,89);
+                addTriangle(89,85,87);
+                addTriangle(84,89,83);
+            }
+
+            FixtureMaxwell025F(): N(5)
+            {
+                BOOST_TEST_MESSAGE( "setup Maxwell025" );
+
+                setupGrid();
+                de = std::make_shared<LinearizedEulerEquationsDE2D<float>>();
+                s = builder.Build(N, de);
+            }
+
+            int N;
+            SimpleDG2DBuilder<float> builder;
+            std::shared_ptr<LinearizedEulerEquationsDE2D<float>> de;
+            std::shared_ptr<System2D<float>> s;
+        };
 
 
         BOOST_AUTO_TEST_CASE(DTScale)
@@ -546,6 +818,40 @@ BOOST_AUTO_TEST_SUITE(DG)
         BOOST_AUTO_TEST_CASE(Face3)
         {
             FixtureMaxwell025 f;
+
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[0], 0);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[1], 6);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[2], 11);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[3], 15);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[4], 18);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[5], 20);
+        }
+
+        BOOST_AUTO_TEST_CASE(Face1F)
+        {
+            FixtureMaxwell025F f;
+
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[0], 0);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[1], 1);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[2], 2);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[3], 3);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[4], 4);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[0]->NodesOnFace[5], 5);
+        }
+        BOOST_AUTO_TEST_CASE(Face2F)
+        {
+            FixtureMaxwell025F f;
+
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[0], 5);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[1], 10);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[2], 14);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[3], 17);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[4], 19);
+            BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[1]->NodesOnFace[5], 20);
+        }
+        BOOST_AUTO_TEST_CASE(Face3F)
+        {
+            FixtureMaxwell025F f;
 
             BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[0], 0);
             BOOST_CHECK_EQUAL(f.s->Element[0]->Faces[2]->NodesOnFace[1], 6);

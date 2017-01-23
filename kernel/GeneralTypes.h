@@ -41,7 +41,7 @@ namespace OpenPSTD
 {
     namespace Kernel
     {
-        const float NODETOL = 1e-8f;
+        const float NODETOL = 1e-5f;
 
         /**
          * short hand for a Vector
