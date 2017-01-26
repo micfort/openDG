@@ -203,6 +203,11 @@ namespace OpenPSTD
             unsigned int IncrementFrameCount(unsigned int domain);
 
             /**
+             * Increment DG framecount
+             */
+            unsigned int IncrementDGFrameCount();
+
+            /**
              * Create key based on a prefix and multiple integer value
              */
             static PSTDFile_Key_t CreateKey(unsigned int prefix, std::initializer_list<unsigned int> list);
@@ -386,6 +391,32 @@ namespace OpenPSTD
              * Saves the next frame for a certain domain in the file
              */
             OPENPSTD_SHARED_EXPORT void SaveNextResultsFrame(unsigned int domain, Kernel::PSTD_FRAME_PTR frame);
+
+            /**
+             * Get the number of frames for the DG data
+             * @param domain The domain index
+             */
+            OPENPSTD_SHARED_EXPORT int GetResultsDGFrameCount();
+
+            /**
+             * Gets the data from the frame of the DG data
+             */
+            OPENPSTD_SHARED_EXPORT Kernel::DG_FRAME_PTR GetResultsDGFrame(unsigned int frame);
+
+            /**
+             * Saves the next frame for the DG data in the file
+             */
+            OPENPSTD_SHARED_EXPORT void SaveNextDGResultsFrame(Kernel::DG_FRAME_PTR frame);
+
+            /**
+             * Saves the X positions for the DG data in the file
+             */
+            OPENPSTD_SHARED_EXPORT void SaveDGXPositions(Kernel::DG_FRAME_PTR xPos);
+
+            /**
+             * Saves the Y positions for the DG data in the file
+             */
+            OPENPSTD_SHARED_EXPORT void SaveDGYPositions(Kernel::DG_FRAME_PTR yPos);
 
             /**
              * Delete all the simulation results
