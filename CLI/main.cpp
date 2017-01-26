@@ -180,12 +180,15 @@ namespace OpenPSTD
             std::cout << "== Results                                                 ==" << std::endl;
             std::cout << "=============================================================" << std::endl;
 
-            int frameCount = file->GetResultsDomainCount();
-            std::cout << "Domains: " << frameCount << std::endl;
-            for (int i = 0; i < frameCount; ++i)
+            int domainCount = file->GetResultsDomainCount();
+            std::cout << "Domains: " << domainCount << std::endl;
+            for (int i = 0; i < domainCount; ++i)
             {
                 std::cout << "Frame count for domain " << i << ": " << file->GetResultsFrameCount(i) << std::endl;
             }
+
+            int frameCount = file->GetResultsDGFrameCount();
+            std::cout << "Frame count for DG data: " << frameCount << std::endl;
         }
 
         void ListCommand::Print(std::shared_ptr<Kernel::PSTDConfiguration> SceneConf)
@@ -543,6 +546,11 @@ namespace OpenPSTD
                     //use the real kernel
                     kernel = std::shared_ptr<Kernel::PSTDKernel>(new Kernel::PSTDKernel(GPU, MCPU));
                 }
+                //save meta data to the file
+                auto metadata = kernel->get_metadata();
+                file->SaveDGXPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGXPositions));
+                file->SaveDGYPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGYPositions));
+
                 //create output
                 std::shared_ptr<Kernel::KernelCallback> output = std::make_shared<CLIOutput>(file, vm.count("debug") > 0);
 

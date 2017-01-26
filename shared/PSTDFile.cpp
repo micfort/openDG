@@ -275,6 +275,9 @@ namespace OpenPSTD
             //create basic geometry with default options
             result->SetSceneConf(Kernel::PSTDConfiguration::CreateDefaultConf());
 
+            //no results in the DG data
+            result->SetValue<int>(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAME_COUNT, {}), 0);
+
             //create empty geometry for results
             result->SetSceneConf(result->CreateKey(PSTD_FILE_PREFIX_RESULTS_SCENE, {}), Kernel::PSTDConfiguration::CreateEmptyConf());
 
@@ -348,7 +351,7 @@ namespace OpenPSTD
             {
                 this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA, {f}));
             }
-            this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAME_COUNT, {}));
+            SetValue<int>(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAME_COUNT, {}), 0);
             this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_X, {}));
             this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_Y, {}));
             this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_NODES, {}));
@@ -559,7 +562,7 @@ namespace OpenPSTD
 
             rc = unqlite_kv_delete(this->backend.get(), key->data(), key->size());
 
-            if (rc != UNQLITE_OK)
+            if (rc != UNQLITE_OK && rc != UNQLITE_NOTFOUND)
             {
                 throw PSTDFileIOException(rc, key, "delete data");
             }

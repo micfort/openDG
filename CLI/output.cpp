@@ -68,7 +68,7 @@ namespace OpenPSTD
 
         void CLIOutput::WriteDGFrame(int frame, DG_FRAME_PTR data)
         {
-
+            _file->SaveNextDGResultsFrame(data);
         }
     }
 }
