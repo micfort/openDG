@@ -546,16 +546,16 @@ namespace OpenPSTD
                     //use the real kernel
                     kernel = std::shared_ptr<Kernel::PSTDKernel>(new Kernel::PSTDKernel(GPU, MCPU));
                 }
-                //save meta data to the file
-                auto metadata = kernel->get_metadata();
-                file->SaveDGXPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGXPositions));
-                file->SaveDGYPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGYPositions));
-
                 //create output
                 std::shared_ptr<Kernel::KernelCallback> output = std::make_shared<CLIOutput>(file, vm.count("debug") > 0);
 
                 //configure the kernel
                 kernel->initialize_kernel(conf, output); //output is used, because that can also be used as log
+
+                //save meta data to the file
+                auto metadata = kernel->get_metadata();
+                file->SaveDGXPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGXPositions));
+                file->SaveDGYPositions(std::make_shared<Kernel::DG_FRAME>(metadata.DGYPositions));
 
                 //run kernel
                 kernel->run(output);
