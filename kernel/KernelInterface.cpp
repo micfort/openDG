@@ -8,7 +8,7 @@
 namespace OpenPSTD {
     namespace Kernel {
 
-        const char *PSTDKernelNotConfiguredException::what() const noexcept {
+        const char *KernelNotConfiguredException::what() const noexcept {
             return "Kernel is not yet configured";
         }
 

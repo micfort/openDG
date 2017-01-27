@@ -50,6 +50,8 @@ namespace OpenPSTD
             OpenPSTD::Kernel::SimulationMetadata metadata;
 
             std::shared_ptr<OpenPSTD::Kernel::KernelCallback> callback;
+
+            DG_FRAME _pxTemp;
         public:
             void initialize_kernel(std::shared_ptr<PSTDConfiguration> config,
                                    std::shared_ptr<KernelCallbackLog> callbackLog) override;

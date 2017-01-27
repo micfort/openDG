@@ -120,7 +120,7 @@ namespace OpenPSTD {
 
         void PSTDKernel::run(std::shared_ptr<KernelCallback> callback) {
             if (!config)
-                throw PSTDKernelNotConfiguredException();
+                throw KernelNotConfiguredException();
 
             using namespace Kernel;
             int solver_num = 0;
@@ -153,7 +153,7 @@ namespace OpenPSTD {
 
         SimulationMetadata PSTDKernel::get_metadata() {
             if (!config)
-                throw PSTDKernelNotConfiguredException();
+                throw KernelNotConfiguredException();
 
             SimulationMetadata result;
             int ndomains = (int) this->scene->domain_list.size();

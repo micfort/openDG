@@ -369,7 +369,7 @@ namespace OpenPSTD {
             virtual SimulationMetadata get_metadata() = 0;
         };
 
-        class PSTDKernelNotConfiguredException : public std::exception {
+        class KernelNotConfiguredException : public std::exception {
         public:
             const char *what() const noexcept override;
         };

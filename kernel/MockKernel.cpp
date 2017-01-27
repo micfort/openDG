@@ -17,7 +17,7 @@ namespace OpenPSTD
         void MockKernel::run(std::shared_ptr<KernelCallback> callback)
         {
             if (!_conf)
-                throw PSTDKernelNotConfiguredException();
+                throw KernelNotConfiguredException();
 
             auto meta = get_metadata();
 
@@ -75,7 +75,7 @@ namespace OpenPSTD
         SimulationMetadata MockKernel::get_metadata()
         {
             if (!_conf)
-                throw PSTDKernelNotConfiguredException();
+                throw KernelNotConfiguredException();
 
             SimulationMetadata result;
 

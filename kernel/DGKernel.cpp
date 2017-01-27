@@ -60,14 +60,19 @@ void OpenPSTD::Kernel::DGKernel::initialize_kernel(std::shared_ptr<OpenPSTD::Ker
 
 void OpenPSTD::Kernel::DGKernel::run(std::shared_ptr<OpenPSTD::Kernel::KernelCallback> callback)
 {
+    if(!this->system)
+        throw KernelNotConfiguredException();
     this->callback = callback;
     this->RK->Calculate(this->renderTime);
 }
 
 OpenPSTD::Kernel::SimulationMetadata OpenPSTD::Kernel::DGKernel::get_metadata()
 {
+    if(!this->system)
+        throw KernelNotConfiguredException();
     //populate this->metadata
-    this->system->OutputMatlabMetadata(this->shared_from_this());
+    auto output = this->shared_from_this();
+    this->system->OutputMatlabMetadata(output);
     this->metadata.Framecount = this->RK->GetTimeStepCount(this->renderTime);
     return this->metadata;
 }
@@ -86,8 +91,16 @@ void OpenPSTD::Kernel::DGKernel::WriteMetadata(std::string name, MatrixX<float> 
 
 void OpenPSTD::Kernel::DGKernel::WriteData(int name, int index, MatrixX<float> state)
 {
-    callback->Info("Calculated frame " + boost::lexical_cast<std::string>(index) + " for " + boost::lexical_cast<std::string>(name));
-    DG_FRAME_PTR data = std::make_shared<DG_FRAME>(state.rows(), state.cols());
-    *data = state;
-    this->callback->WriteDGFrame(index, data);
+    if(name == DG::LinearizedEulerEquationsDE2D<float>::IndexPX)
+    {
+        _pxTemp = state;
+    }
+    else if(name == DG::LinearizedEulerEquationsDE2D<float>::IndexPY)
+    {
+        callback->Info("Calculated frame " + boost::lexical_cast<std::string>(index));
+        DG_FRAME_PTR data = std::make_shared<DG_FRAME>(state.rows(), state.cols());
+        *data = state+_pxTemp;
+        this->callback->WriteDGFrame(index, data);
+    }
+
 }
