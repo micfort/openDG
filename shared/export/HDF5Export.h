@@ -18,6 +18,7 @@ namespace OpenPSTD
             void ExportPSTDData(int file_id, std::shared_ptr<PSTDFile> file, std::vector<int> domains, int startFrame, int endFrame);
             void ExportDGData(int file_id, std::shared_ptr<PSTDFile> file, int startFrame, int endFrame);
             void ExportReceiverData(int file_id, std::shared_ptr<PSTDFile> file, int startFrame, int endFrame);
+            void ExportGeneral(int file_id, std::shared_ptr<PSTDFile> file);
 
         public:
             OPENPSTD_SHARED_EXPORT virtual void ExportData(std::string format, std::shared_ptr<PSTDFile> file, std::string output,

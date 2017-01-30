@@ -37,6 +37,7 @@ namespace OpenPSTD
             ExportPSTDData(file_id, file, domains, startFrame, endFrame);
             ExportReceiverData(file_id, file, startFrame, endFrame);
             ExportDGData(file_id, file, startFrame, endFrame);
+            ExportGeneral(file_id, file);
 
             /* close file */
             H5Fclose (file_id);
@@ -135,6 +136,55 @@ namespace OpenPSTD
 
                 H5LTmake_dataset(file_id, location.c_str(), 2, size.data(), H5T_NATIVE_FLOAT, data.data());
             }
+
+            H5Gclose(frame_dir_id);
+        }
+
+
+        void SaveVariable(hid_t file_id, std::string name, float value)
+        {
+            std::string loc = "/Settings/" + name;
+            std::vector<hsize_t> size;
+            size.push_back(1);
+            H5LTmake_dataset(file_id, loc.c_str(), 1, size.data(), H5T_NATIVE_FLOAT, &value);
+        }
+
+        void SaveVariable(hid_t file_id, std::string name, int value)
+        {
+            std::string loc = "/Settings/" + name;
+            std::vector<hsize_t> size;
+            size.push_back(1);
+            H5LTmake_dataset(file_id, loc.c_str(), 1, size.data(), H5T_NATIVE_INT, &value);
+        }
+
+        void SaveVariable(hid_t file_id, std::string name, bool value)
+        {
+            hbool_t v2 = value;
+
+            std::string loc = "/Settings/" + name;
+            std::vector<hsize_t> size;
+            size.push_back(1);
+            H5LTmake_dataset(file_id, loc.c_str(), 1, size.data(), H5T_NATIVE_HBOOL, &v2);
+        }
+
+        void HDF5::ExportGeneral(int file_id, std::shared_ptr<PSTDFile> file)
+        {
+            auto conf = file->GetResultsSceneConf();
+
+            hid_t frame_dir_id = H5Gcreate2(file_id, "/Settings", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+            SaveVariable(file_id, "RenderTime", conf->Settings.GetRenderTime());
+            SaveVariable(file_id, "SoundSpeed", conf->Settings.GetSoundSpeed());
+            SaveVariable(file_id, "AttenuationOfPMLCells", conf->Settings.GetAttenuationOfPMLCells());
+            SaveVariable(file_id, "MaxFrequency", conf->Settings.GetMaxFrequency());
+            SaveVariable(file_id, "DensityOfAir", conf->Settings.GetDensityOfAir());
+            SaveVariable(file_id, "PatchError", conf->Settings.GetPatchError());
+            SaveVariable(file_id, "FactRK", conf->Settings.GetFactRK());
+            SaveVariable(file_id, "GridSpacing", conf->Settings.GetGridSpacing());
+            SaveVariable(file_id, "BandWidth", conf->Settings.GetBandWidth());
+            SaveVariable(file_id, "WaveLength", conf->Settings.GetWaveLength());
+            SaveVariable(file_id, "SpectralInterpolation", conf->Settings.GetSpectralInterpolation());
+            SaveVariable(file_id, "PMLCells", conf->Settings.GetPMLCells());
 
             H5Gclose(frame_dir_id);
         }
