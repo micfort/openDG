@@ -104,13 +104,13 @@ extern "C"
 /**
  * The X positions of the nodes in the elements
  * type: float[#nodes, #elements]
- * key parameters: [receiver]
+ * key parameters: []
  */
 #define PSTD_FILE_PREFIX_RESULTS_DG_POS_X 112
 /**
  * The Y positions of the nodes in the elements
  * type: float[#nodes, #elements]
- * key parameters: [receiver]
+ * key parameters: []
  */
 #define PSTD_FILE_PREFIX_RESULTS_DG_POS_Y 113
 /**
@@ -690,15 +690,13 @@ namespace OpenPSTD
             auto key_nodes = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_NODES, {});
             SetValue<int>(key_nodes, xPos->rows());
 
-            //increment the frame index
-            unsigned int frameIndex = IncrementDGFrameCount();
             //convert to a simple array
             vector<DG_FRAME_UNIT> data(xPos->rows() * xPos->cols());
             Map<DG_FRAME> map(data.data(), xPos->rows(), xPos->cols());
             map = *xPos;
 
             //save in the file
-            this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_X, {frameIndex}),
+            this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_X, {}),
                               data.size() * sizeof(Kernel::DG_FRAME_UNIT), data.data());
         }
 
@@ -714,16 +712,74 @@ namespace OpenPSTD
             auto key_nodes = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_NODES, {});
             SetValue<int>(key_nodes, yPos->rows());
 
-            //increment the frame index
-            unsigned int frameIndex = IncrementDGFrameCount();
             //convert to a simple array
             vector<DG_FRAME_UNIT> data(yPos->rows() * yPos->cols());
             Map<DG_FRAME> map(data.data(), yPos->rows(), yPos->cols());
             map = *yPos;
 
             //save in the file
-            this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_Y, {frameIndex}),
+            this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_Y, {}),
                               data.size() * sizeof(Kernel::DG_FRAME_UNIT), data.data());
+        }
+
+        Kernel::DG_FRAME_PTR PSTDFile::GetDGXPositions()
+        {
+            using namespace Kernel;
+            using namespace Eigen;
+            using namespace std;
+
+            //read the sizes
+            auto key_elements = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_ELEMENTS, {});
+            int elements = GetValue<int>(key_elements);
+            auto key_nodes = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_NODES, {});
+            int nodes = GetValue<int>(key_nodes);
+
+            //read from the file
+            unqlite_int64 size;
+            float *data = (float *) this->GetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_X, {}), &size);
+
+            //map the data
+            Map<DG_FRAME> map(data, nodes, elements);
+
+            //create resulting object
+            DG_FRAME_PTR result = make_shared<Kernel::DG_FRAME>(nodes, elements);
+
+            //convert data
+            *result = map;
+
+            delete[] data;
+
+            return result;
+        }
+
+        Kernel::DG_FRAME_PTR PSTDFile::GetDGYPositions()
+        {
+            using namespace Kernel;
+            using namespace Eigen;
+            using namespace std;
+
+            //read the sizes
+            auto key_elements = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_ELEMENTS, {});
+            int elements = GetValue<int>(key_elements);
+            auto key_nodes = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_NODES, {});
+            int nodes = GetValue<int>(key_nodes);
+
+            //read from the file
+            unqlite_int64 size;
+            float *data = (float *) this->GetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_Y, {}), &size);
+
+            //map the data
+            Map<DG_FRAME> map(data, nodes, elements);
+
+            //create resulting object
+            DG_FRAME_PTR result = make_shared<Kernel::DG_FRAME>(nodes, elements);
+
+            //convert data
+            *result = map;
+
+            delete[] data;
+
+            return result;
         }
 
 

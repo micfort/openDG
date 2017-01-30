@@ -419,6 +419,16 @@ namespace OpenPSTD
             OPENPSTD_SHARED_EXPORT void SaveDGYPositions(Kernel::DG_FRAME_PTR yPos);
 
             /**
+             * Gets the X positions for the DG data in the file
+             */
+            OPENPSTD_SHARED_EXPORT Kernel::DG_FRAME_PTR GetDGXPositions();
+
+            /**
+             * Gets the Y positions for the DG data in the file
+             */
+            OPENPSTD_SHARED_EXPORT Kernel::DG_FRAME_PTR GetDGYPositions();
+
+            /**
              * Delete all the simulation results
              */
             OPENPSTD_SHARED_EXPORT void DeleteResults();
