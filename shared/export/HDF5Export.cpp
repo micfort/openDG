@@ -111,10 +111,12 @@ namespace OpenPSTD
             Kernel::DG_FRAME_PTR X = file->GetDGXPositions();
             Kernel::DG_FRAME_PTR Y = file->GetDGYPositions();
 
+            std::cout << *X << std::endl;
+
             std::vector<Kernel::DG_FRAME_UNIT> xData(X->rows() * X->cols());
             std::vector<Kernel::DG_FRAME_UNIT> yData(Y->rows() * Y->cols());
-            Eigen::Map<Kernel::DG_FRAME> xMap(xData.data(), X->rows(), X->cols());
-            Eigen::Map<Kernel::DG_FRAME> yMap(yData.data(), Y->rows(), Y->cols());
+            Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> xMap(xData.data(), X->rows(), X->cols());
+            Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> yMap(yData.data(), Y->rows(), Y->cols());
             xMap = *X;
             yMap = *Y;
 
@@ -131,7 +133,7 @@ namespace OpenPSTD
                 Kernel::DG_FRAME_PTR frame = file->GetResultsDGFrame(f);
 
                 std::vector<Kernel::DG_FRAME_UNIT> data(frame->rows() * frame->cols());
-                Eigen::Map<Kernel::DG_FRAME> map(data.data(), frame->rows(), frame->cols());
+                Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> map(data.data(), frame->rows(), frame->cols());
                 map = *frame;
 
                 H5LTmake_dataset(file_id, location.c_str(), 2, size.data(), H5T_NATIVE_FLOAT, data.data());
@@ -192,8 +194,8 @@ namespace OpenPSTD
         std::vector<hsize_t> getSize(unsigned long long rows, unsigned long long cols)
         {
             std::vector<hsize_t> size;
-            size.push_back(rows);
             size.push_back(cols);
+            size.push_back(rows);
             return size;
         }
     }
