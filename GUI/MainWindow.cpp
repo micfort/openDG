@@ -108,6 +108,7 @@ namespace OpenPSTD
             QObject::connect(ui->actionNew, &QAction::triggered, this, &MainWindow::New);
             QObject::connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::Open);
             QObject::connect(ui->actionSave, &QAction::triggered, this, &MainWindow::Save);
+            QObject::connect(ui->actionImport_Geometry, &QAction::triggered, this, &MainWindow::ImportGeometry);
             QObject::connect(ui->actionExport_Image, &QAction::triggered, this, &MainWindow::ExportImage);
             QObject::connect(ui->actionExport_HDF5, &QAction::triggered, this, &MainWindow::ExportHDF5);
             QObject::connect(ui->actionMove_scene, &QAction::triggered, this,
@@ -300,6 +301,7 @@ namespace OpenPSTD
         void MainWindow::UpdateDisableWidgets(std::shared_ptr<Model> const &model, std::shared_ptr<BackgroundWorker> worker)
         {
             ui->actionSave->setEnabled(model->documentAccess->IsDocumentLoaded());
+            ui->actionImport_Geometry->setEnabled(model->documentAccess->IsDocumentLoaded());
             ui->actionMove_scene->setEnabled(model->documentAccess->IsDocumentLoaded());
             ui->actionView_complete_scene->setEnabled(model->documentAccess->IsDocumentLoaded());
 
@@ -313,7 +315,6 @@ namespace OpenPSTD
             ui->actionSelect->setEnabled(documentEdit);
             ui->actionDocument_Settings->setEnabled(documentEdit);
             ui->actionStart_simulation->setEnabled(documentEdit);
-            ui->actionApplication_Settings->setEnabled(documentEdit);
             ui->actionExport_Image->setEnabled(documentEdit);
             ui->actionExport_HDF5->setEnabled(documentEdit);
 
@@ -385,6 +386,17 @@ namespace OpenPSTD
         void MainWindow::hsbFrameChanged(int value)
         {
             this->operationRunner.lock()->RunOperation(std::make_shared<ChangeViewingFrame>(value));
+        }
+
+        void MainWindow::ImportGeometry()
+        {
+            QString fileName = QFileDialog::getOpenFileName(this, tr("Open geometry file"), QString(),
+                                                            tr("Geometry file (*.geo)"));
+            if (!fileName.isNull())
+            {
+                auto op = std::make_shared<ImportGeometryOperation>(fileName.toStdString());
+                this->operationRunner.lock()->RunOperation(op);
+            }
         }
 
         void MainWindow::ExportHDF5()

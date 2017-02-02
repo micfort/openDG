@@ -35,7 +35,8 @@
 #include "long/LongOperationRunner.h"
 #include <shared/export/HDF5Export.h>
 #include <shared/export/Image.h>
-
+#include <shared/GeometryImport.h>
+#include <fstream>
 
 namespace OpenPSTD
 {
@@ -142,6 +143,23 @@ namespace OpenPSTD
             realExport.ExportData(formatString, doc.get(), this->directory, this->name, domains, this->startFrame, this->endFrame);
         }
 
+        ImportGeometryOperation::ImportGeometryOperation(std::string filename) : BaseOperation()
+        {
+            this->filename = filename;
+        }
+
+        void ImportGeometryOperation::Run(const Reciever &reciever)
+        {
+            auto doc = reciever.model->documentAccess->GetDocument();
+            auto conf = doc->GetSceneConf();
+            std::unique_ptr<std::ifstream> geofile = std::unique_ptr<std::ifstream>(new std::ifstream(this->filename));
+            Shared::GeometryImport import(std::move(geofile));
+            conf->Domains = *import.PSTDDomains;
+            conf->DGVertices = *import.DGVertices;
+            conf->DGIndices = *import.DGIndices;
+
+            doc->SetSceneConf(conf);
+        }
     }
 }
 

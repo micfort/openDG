@@ -94,6 +94,8 @@ namespace OpenPSTD
             void Open();
 
             void Save();
+
+            void ImportGeometry();
             void ExportHDF5();
             void ExportImage();
 

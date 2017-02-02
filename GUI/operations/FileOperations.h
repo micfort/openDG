@@ -83,6 +83,16 @@ namespace OpenPSTD
             std::string filename;
         };
 
+        class ImportGeometryOperation: public BaseOperation
+        {
+        public:
+            ImportGeometryOperation(std::string filename);
+
+            void Run(const Reciever &reciever) override;
+        private:
+            std::string filename;
+        };
+
         class ExportToHDF5Operation : public BaseOperation
         {
         public:
