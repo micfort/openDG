@@ -88,8 +88,19 @@ namespace OpenPSTD
         class View : public Shared::InvalidationData
         {
         public:
+            /**
+             * viewMatrix = aspectMatrix*worldMatrix
+             * This matrix should be used in the general case
+             */
             QMatrix4x4 viewMatrix;
+            /**
+             * If needed to do some calculations without aspect ration, this matrix can be used. (eg calculate grid
+             * spacing)
+             */
             QMatrix4x4 worldMatrix;
+            /**
+             * The matrix that holds the aspect ratio
+             */
             QMatrix4x4 aspectMatrix;
         };
 
