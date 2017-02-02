@@ -159,6 +159,7 @@ namespace OpenPSTD
             conf->DGIndices = *import.DGIndices;
 
             doc->SetSceneConf(conf);
+            doc->Change();
         }
     }
 }
