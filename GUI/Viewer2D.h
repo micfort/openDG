@@ -93,6 +93,7 @@ namespace OpenPSTD
         public:
             MinMaxValue();
 
+            MinMaxValue(float x1, float x2, float y1, float y2);
             MinMaxValue(QVector2D min, QVector2D max);
 
             QVector2D min;

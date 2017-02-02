@@ -153,6 +153,9 @@ namespace OpenPSTD
         OPENPSTD_SHARED_EXPORT QColor BaseColorScheme::EditorReceiverColor()
         { return COLOR_WHITE; }
 
+        OPENPSTD_SHARED_EXPORT QColor BaseColorScheme::EditorDGTriangleColor()
+        { return COLOR_BLACK; }
+
 
         OPENPSTD_SHARED_EXPORT QColor StandardColorScheme::EditorBackgroundColor()
         {
@@ -201,5 +204,8 @@ namespace OpenPSTD
         {
             return COLOR_GREEN;
         }
+
+        OPENPSTD_SHARED_EXPORT QColor StandardColorScheme::EditorDGTriangleColor()
+        { return COLOR_BLACK; }
     }
 }

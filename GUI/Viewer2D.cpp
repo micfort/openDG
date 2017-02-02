@@ -50,6 +50,7 @@
 #include "layers/IconLayer.h"
 #include "layers/InteractiveLayer.h"
 #include "layers/ResultsLayer.h"
+#include "layers/DGTriangleLayer.h"
 #include <boost/lexical_cast.hpp>
 #include <QtGui/QPainter>
 #include "operations/ViewOperations.h"
@@ -93,6 +94,7 @@ namespace OpenPSTD
         {
             this->layers.push_back(std::make_shared<ResultsLayer>());
             this->layers.push_back(std::make_shared<GridLayer>());
+            this->layers.push_back(std::make_shared<DGTriangleLayer>());
             this->layers.push_back(std::make_shared<SceneLayer>());
             this->layers.push_back(std::make_shared<IconLayer>());
             this->layers.push_back(std::make_shared<InteractiveLayer>());
@@ -221,13 +223,21 @@ namespace OpenPSTD
 
         MinMaxValue::MinMaxValue()
         {
-
+            this->Active = false;
         }
 
-        MinMaxValue::MinMaxValue(QVector2D min, QVector2D max)
+        MinMaxValue::MinMaxValue(float x1, float x2, float y1, float y2)
         {
-            this->min = min;
-            this->max = max;
+            this->min = QVector2D(x1<x2?x1:x2, y1<y2?y1:y2);
+            this->max = QVector2D(x1<x2?x2:x1, y1<y2?y2:y1);
+            this->Active = true;
+        }
+
+        MinMaxValue::MinMaxValue(QVector2D p1, QVector2D p2)
+        {
+            float x1 = p1.x(), x2 = p2.x(), y1 = p1.y(), y2 = p2.y();
+            this->min = QVector2D(x1<x2?x1:x2, y1<y2?y1:y2);
+            this->max = QVector2D(x1<x2?x2:x1, y1<y2?y2:y1);
             this->Active = true;
         }
 

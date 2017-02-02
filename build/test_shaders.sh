@@ -25,3 +25,6 @@ echo ===============SymbolInternal===============
 
 echo ===============Text===============
 ./glslangValidator ${SHADER_DIRECTORY}Text.frag ${SHADER_DIRECTORY}Text.vert
+
+echo ===============DG triangles===============
+./glslangValidator ${SHADER_DIRECTORY}PassPosition.vert ${SHADER_DIRECTORY}Line.geom ${SHADER_DIRECTORY}FixedColor.frag

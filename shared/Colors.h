@@ -155,6 +155,8 @@ namespace OpenPSTD
 
             OPENPSTD_SHARED_EXPORT virtual QColor EditorReceiverColor();
 
+            OPENPSTD_SHARED_EXPORT virtual QColor EditorDGTriangleColor();
+
         };
 
 /**
@@ -181,6 +183,7 @@ namespace OpenPSTD
 
             OPENPSTD_SHARED_EXPORT virtual QColor EditorReceiverColor();
 
+            OPENPSTD_SHARED_EXPORT virtual QColor EditorDGTriangleColor();
         };
     }
 }
