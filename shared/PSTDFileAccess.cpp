@@ -91,6 +91,15 @@ namespace OpenPSTD
             }
         }
 
+        OPENPSTD_SHARED_EXPORT void PSTDFileAccess::Reset()
+        {
+            InvalidationData::Reset();
+            if(this->d)
+            {
+                this->d->Reset();
+            }
+        }
+
         OPENPSTD_SHARED_EXPORT bool PSTDFileAccess::IsDocumentLoaded()
         {
             boost::unique_lock<boost::recursive_mutex> m_lock(*this->mutex);
@@ -106,7 +115,6 @@ namespace OpenPSTD
             std::string result = this->realPath.filename().string();
             return result;
         }
-
 
         OPENPSTD_SHARED_EXPORT const char *PSTDFileAccessInUseException::what() const noexcept
         {
