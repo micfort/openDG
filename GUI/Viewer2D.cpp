@@ -95,8 +95,8 @@ namespace OpenPSTD
         {
             this->layers.push_back(std::make_shared<ResultsLayer>());
             this->layers.push_back(std::make_shared<DGResults>());
-            //this->layers.push_back(std::make_shared<GridLayer>());
-            //this->layers.push_back(std::make_shared<DGTriangleLayer>());
+            this->layers.push_back(std::make_shared<GridLayer>());
+            this->layers.push_back(std::make_shared<DGTriangleLayer>());
             this->layers.push_back(std::make_shared<SceneLayer>());
             this->layers.push_back(std::make_shared<IconLayer>());
             this->layers.push_back(std::make_shared<InteractiveLayer>());
