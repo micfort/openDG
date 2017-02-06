@@ -21,6 +21,8 @@
         <file>GPU/Line.geom</file>
         <file>GPU/PassPosition.vert</file>
         <file>GPU/FixedColor.frag</file>
+        <file>GPU/DGResult.vert</file>
+        <file>GPU/DGResult.frag</file>
 
         <!-- Icons -->
         <file>Images/noun_100_cc.png</file>

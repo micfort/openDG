@@ -102,8 +102,6 @@ void OpenPSTD::GUI::DGTriangleLayer::UpdateScene(const std::shared_ptr<OpenPSTD:
 
         lines = 0;
 
-        std::cout << "update DG indices/vertices" << std::endl;
-
         for (int i = 0; i < conf->DGIndices.size(); ++i)
         {
             auto elementSize = conf->DGIndices[i].size();

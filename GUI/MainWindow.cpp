@@ -327,19 +327,24 @@ namespace OpenPSTD
         void MainWindow::UpdateHsbFrame(std::shared_ptr<Model> const &model, std::shared_ptr<BackgroundWorker> worker)
         {
             bool documentEdit = model->documentAccess->IsDocumentLoaded();
-            if(documentEdit && model->documentAccess->IsChanged())
+            if(documentEdit)
             {
                 auto doc = model->documentAccess->GetDocument();
                 bool anyFrame = false;
                 int max = 0;
                 int domains = doc->GetResultsDomainCount();
+                int frameCount;
 
                 for(int d = 0; d < domains; d++)
                 {
-                    int frameCount = doc->GetResultsFrameCount(d);
+                    frameCount = doc->GetResultsFrameCount(d);
                     anyFrame |= frameCount > 0;
                     max = std::max(max, frameCount-1);
                 }
+
+                frameCount = doc->GetResultsDGFrameCount();
+                anyFrame |= frameCount > 0;
+                max = std::max(max, frameCount-1);
 
                 ui->hsbFrame->setEnabled(anyFrame);
                 ui->hsbFrame->setMaximum(max);

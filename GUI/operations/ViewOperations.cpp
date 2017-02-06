@@ -174,11 +174,13 @@ namespace OpenPSTD
             for(int d = 0; d < domains; d++)
             {
                 int frameCount = doc->GetResultsFrameCount(d);
-                if(frameCount > 0)
-                {
-                    min = 0;
-                }
                 max = std::max(max, frameCount);
+            }
+
+            max = std::max(max, doc->GetResultsDGFrameCount());
+            if(max >= 0)
+            {
+                min = 0;
             }
 
             if(min <= this->frame && this->frame <= max)

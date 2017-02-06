@@ -51,6 +51,7 @@
 #include "layers/InteractiveLayer.h"
 #include "layers/ResultsLayer.h"
 #include "layers/DGTriangleLayer.h"
+#include "layers/DGResults.h"
 #include <boost/lexical_cast.hpp>
 #include <QtGui/QPainter>
 #include "operations/ViewOperations.h"
@@ -93,8 +94,9 @@ namespace OpenPSTD
                 : QOpenGLWidget(parent), layers()
         {
             this->layers.push_back(std::make_shared<ResultsLayer>());
-            this->layers.push_back(std::make_shared<GridLayer>());
-            this->layers.push_back(std::make_shared<DGTriangleLayer>());
+            this->layers.push_back(std::make_shared<DGResults>());
+            //this->layers.push_back(std::make_shared<GridLayer>());
+            //this->layers.push_back(std::make_shared<DGTriangleLayer>());
             this->layers.push_back(std::make_shared<SceneLayer>());
             this->layers.push_back(std::make_shared<IconLayer>());
             this->layers.push_back(std::make_shared<InteractiveLayer>());
@@ -140,14 +142,19 @@ namespace OpenPSTD
             const GLubyte * version = f->glGetString(GL_VERSION);
             const GLubyte * shadingLanguageVersion = f->glGetString(GL_SHADING_LANGUAGE_VERSION);
             int major, minor;
+            int maxTextureSize, max3DTextureSize;
             f->glGetIntegerv(GL_MAJOR_VERSION, &major);
             f->glGetIntegerv(GL_MINOR_VERSION, &minor);
+            f->glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &max3DTextureSize);
+            f->glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 
             std::cout << "Vendor: " << vendor << std::endl;
             std::cout << "Renderer: " << renderer << std::endl;
             std::cout << "Version: " << version << std::endl;
             std::cout << "Shading language version: " << shadingLanguageVersion << std::endl;
             std::cout << "OpenGL version: " << major << "." << minor << std::endl;
+            std::cout << "Maximal texture size: " << maxTextureSize << std::endl;
+            std::cout << "Maximal 3D texture size: " << max3DTextureSize << std::endl;
 
             f->glClearColor(0, 0, 0, 1);
 

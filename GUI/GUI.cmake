@@ -32,7 +32,8 @@ set(SOURCE_FILES_GUI ${SOURCE_FILES_GUI}
         GUI/layers/InteractiveLayer.cpp
         GUI/layers/IconLayer.cpp
         GUI/layers/ResultsLayer.cpp
-        GUI/layers/DGTriangleLayer.cpp)
+        GUI/layers/DGTriangleLayer.cpp
+        GUI/layers/DGResults.cpp)
 # UI files
 set(SOURCE_FILES_GUI ${SOURCE_FILES_GUI}
         GUI/MainWindow.cpp
