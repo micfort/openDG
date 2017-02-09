@@ -31,7 +31,7 @@
 
 #include "DGResults.h"
 
-OpenPSTD::GUI::DGResults::DGResults() : Layer()
+OpenPSTD::GUI::DGResults::DGResults() : Layer(), i1(-1), i2(-1), i3(-1), valuesInitialized(false)
 {
 
 }
@@ -63,25 +63,28 @@ OpenPSTD::GUI::DGResults::InitializeGL(QObject *context, std::unique_ptr<QOpenGL
 
 void OpenPSTD::GUI::DGResults::PaintGL(QObject *context, std::unique_ptr<QOpenGLFunctions, void (*)(void *)> const &f)
 {
-    program->bind();
-    program->enableAttributeArray("a_position");
-    program->enableAttributeArray("pressure");
+    if(valuesInitialized)
+    {
+        program->bind();
+        program->enableAttributeArray("a_position");
+        program->enableAttributeArray("pressure");
 
-    f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
-    GLError("DGResults f->glBindBuffer(this->positionsBuffer)");
-    f->glVertexAttribPointer((GLuint) program->attributeLocation("a_position"), 2, GL_FLOAT, GL_FALSE, 0, 0);
-    GLError("DGResults f->glVertexAttribPointer");
+        f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
+        GLError("DGResults f->glBindBuffer(this->positionsBuffer)");
+        f->glVertexAttribPointer((GLuint) program->attributeLocation("a_position"), 2, GL_FLOAT, GL_FALSE, 0, 0);
+        GLError("DGResults f->glVertexAttribPointer");
 
-    f->glBindBuffer(GL_ARRAY_BUFFER, this->valuesBuffer);
-    GLError("DGResults f->glBindBuffer(this->valuesBuffer)");
-    f->glVertexAttribPointer((GLuint) program->attributeLocation("pressure"), 1, GL_FLOAT, GL_FALSE, 0, 0);
-    GLError("DGResults f->glVertexAttribPointer");
+        f->glBindBuffer(GL_ARRAY_BUFFER, this->valuesBuffer);
+        GLError("DGResults f->glBindBuffer(this->valuesBuffer)");
+        f->glVertexAttribPointer((GLuint) program->attributeLocation("pressure"), 1, GL_FLOAT, GL_FALSE, 0, 0);
+        GLError("DGResults f->glVertexAttribPointer");
 
-    f->glDrawArrays(GL_TRIANGLES, 0, triangles * 3);
-    GLError("DGResults f->glDrawArrays");
+        f->glDrawArrays(GL_TRIANGLES, 0, triangles * 3);
+        GLError("DGResults f->glDrawArrays");
 
-    program->disableAttributeArray("pressure");
-    program->disableAttributeArray("a_position");
+        program->disableAttributeArray("pressure");
+        program->disableAttributeArray("a_position");
+    }
 }
 
 void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::Model> &m,
@@ -94,71 +97,77 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
         program->setUniformValue("u_view", m->view->viewMatrix);
     }
 
-    if (m->documentAccess->IsChanged() || m->interactive->IsChanged())
+    auto doc = m->documentAccess->GetDocument();
+
+    if (m->documentAccess->IsChanged() || i1 < 0)
     {
-        auto doc = m->documentAccess->GetDocument();
+        auto conf = doc->GetResultsSceneConf();
+
+        auto X = doc->GetDGXPositions();
+        auto Y = doc->GetDGYPositions();
+
+        time_t start = time(0);
+
+        std::vector<QVector2D> positions;
+        positions.reserve(conf->DGIndices.size() * 3);
+        MinMaxValue minMaxPos;
+
+        for (int i = 0; i < conf->DGIndices.size(); ++i)
+        {
+            //create the 3 points
+            QVector2D p1(conf->DGVertices[conf->DGIndices[i][0]](0),
+                         conf->DGVertices[conf->DGIndices[i][0]](1));
+            QVector2D p2(conf->DGVertices[conf->DGIndices[i][1]](0),
+                         conf->DGVertices[conf->DGIndices[i][1]](1));
+            QVector2D p3(conf->DGVertices[conf->DGIndices[i][2]](0),
+                         conf->DGVertices[conf->DGIndices[i][2]](1));
+
+            //update min max values
+            minMaxPos = MinMaxValue::Combine(minMaxPos, MinMaxValue(p1, p2));
+
+            //add to vector
+            positions.push_back(p1);
+            positions.push_back(p2);
+            positions.push_back(p3);
+
+            if(i1 < 0)
+            {
+                Kernel::VectorX<float> x = X->col(i);
+                Kernel::VectorX<float> y = Y->col(i);
+                i1 = GetClosest(p1, x, y);
+                i2 = GetClosest(p2, x, y);
+                i3 = GetClosest(p3, x, y);
+            }
+        }
+        triangles = conf->DGIndices.size();
+
+        this->minMaxPos = minMaxPos;
+
+        f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
+        f->glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(QVector2D), positions.data(), GL_STATIC_DRAW);
+
+        time_t end = time(0);
+    }
+
+    if(m->interactive->IsChanged())
+    {
         if(m->interactive->visibleFrame >= 0 && m->interactive->visibleFrame < doc->GetResultsDGFrameCount())
         {
-            auto conf = doc->GetResultsSceneConf();
             Kernel::DG_FRAME_PTR frame = doc->GetResultsDGFrame(m->interactive->visibleFrame);
-            auto X = doc->GetDGXPositions();
-            auto Y = doc->GetDGYPositions();
 
-            std::vector<QVector2D> positions;
             std::vector<float> values;
-            //*3*2*2 -> every element exist from 3 points(assumption that they are triangles) and every edge has 2 points
-            positions.reserve(conf->DGIndices.size() * 3);
-            values.reserve(conf->DGIndices.size() * 3);
-            MinMaxValue minMaxPos;
+            values.reserve(frame->cols() * 3);
 
-            triangles = 0;
-            int i1 = -1, i2 = -1, i3 = -1;
-
-            for (int i = 0; i < conf->DGIndices.size(); ++i)
+            for (int i = 0; i < frame->cols(); ++i)
             {
-                auto elementSize = conf->DGIndices[i].size();
-                for (int j = 0; j < elementSize - 2; ++j)
-                {
-                    //create the 2 points
-                    QVector2D p1(conf->DGVertices[conf->DGIndices[i][(j + 0) % elementSize]](0),
-                                 conf->DGVertices[conf->DGIndices[i][(j + 0) % elementSize]](1));
-                    QVector2D p2(conf->DGVertices[conf->DGIndices[i][(j + 1) % elementSize]](0),
-                                 conf->DGVertices[conf->DGIndices[i][(j + 1) % elementSize]](1));
-                    QVector2D p3(conf->DGVertices[conf->DGIndices[i][(j + 2) % elementSize]](0),
-                                 conf->DGVertices[conf->DGIndices[i][(j + 2) % elementSize]](1));
-
-                    //update min max values
-                    minMaxPos = MinMaxValue::Combine(minMaxPos, MinMaxValue(p1, p2));
-
-                    //add to vector
-                    positions.push_back(p1);
-                    positions.push_back(p2);
-                    positions.push_back(p3);
-
-                    Kernel::VectorX<float> x = X->col(i);
-                    Kernel::VectorX<float> y = Y->col(i);
-                    if(i1 < 0)
-                        i1 = GetClosest(p1, x, y);
-                    if(i2 < 0)
-                        i2 = GetClosest(p2, x, y);
-                    if(i3 < 0)
-                        i3 = GetClosest(p3, x, y);
-                    values.push_back((*frame)(i1, i));
-                    values.push_back((*frame)(i2, i));
-                    values.push_back((*frame)(i3, i));
-                    triangles++;
-                }
+                values.push_back((*frame)(i1, i));
+                values.push_back((*frame)(i2, i));
+                values.push_back((*frame)(i3, i));
             }
 
-            this->minMaxPos = minMaxPos;
-
-            f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
-            f->glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(QVector2D), positions.data(),
-                            GL_STATIC_DRAW);
-
             f->glBindBuffer(GL_ARRAY_BUFFER, this->valuesBuffer);
-            f->glBufferData(GL_ARRAY_BUFFER, values.size() * sizeof(float), values.data(),
-                            GL_DYNAMIC_DRAW);
+            f->glBufferData(GL_ARRAY_BUFFER, values.size() * sizeof(float), values.data(), GL_DYNAMIC_DRAW);
+            valuesInitialized = true;
         }
     }
 }

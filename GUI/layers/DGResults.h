@@ -45,6 +45,8 @@ namespace OpenPSTD
             unsigned int positionsBuffer;
             unsigned int valuesBuffer;
             int triangles;
+            int i1, i2, i3;
+            bool valuesInitialized;
 
             MinMaxValue minMaxPos;
 
