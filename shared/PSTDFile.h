@@ -404,9 +404,16 @@ namespace OpenPSTD
             OPENPSTD_SHARED_EXPORT Kernel::DG_FRAME_PTR GetResultsDGFrame(unsigned int frame);
 
             /**
-             * Saves the next frame for the DG data in the file
+             * Gets the data from the corner frame of the DG data
              */
-            OPENPSTD_SHARED_EXPORT void SaveNextDGResultsFrame(Kernel::DG_FRAME_PTR frame);
+            OPENPSTD_SHARED_EXPORT Kernel::DG_FRAME_PTR GetResultsDGFrameCorner(unsigned int frame);
+
+            /**
+             * Saves the next frame for the DG data in the file
+             * @param frame the real frame data
+             * @param cornerFrame The corners data of the frame
+             */
+            OPENPSTD_SHARED_EXPORT void SaveNextDGResultsFrame(Kernel::DG_FRAME_PTR frame, Kernel::DG_FRAME_PTR cornerFrame);
 
             /**
              * Saves the X positions for the DG data in the file

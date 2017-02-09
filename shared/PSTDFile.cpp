@@ -125,6 +125,12 @@ extern "C"
  * key parameters: [frame]
  */
 #define PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA 115
+/**
+ * the resulting simulation data with only the corners
+ * type: float[3, #elements]
+ * key parameters: [frame]
+ */
+#define PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA_CORNER 116
 
 /**
  * The version of the file, this is tested by the code, and if this is wrong an error will be given.
@@ -350,6 +356,7 @@ namespace OpenPSTD
             for (unsigned int f = 0; f < frameCount; ++f)
             {
                 this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA, {f}));
+                this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA_CORNER, {f}));
             }
             SetValue<int>(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAME_COUNT, {}), 0);
             this->DeleteValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_POS_X, {}));
@@ -646,7 +653,35 @@ namespace OpenPSTD
             return result;
         }
 
-        void PSTDFile::SaveNextDGResultsFrame(Kernel::DG_FRAME_PTR frame)
+        Kernel::DG_FRAME_PTR PSTDFile::GetResultsDGFrameCorner(unsigned int frame)
+        {
+            using namespace Kernel;
+            using namespace Eigen;
+            using namespace std;
+
+            //read the sizes
+            auto key_elements = CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_ELEMENTS, {});
+            int elements = GetValue<int>(key_elements);
+
+            //read from the file
+            unqlite_int64 size;
+            float *data = (float *) this->GetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA_CORNER, {frame}), &size);
+
+            //map the data
+            Map<DG_FRAME> map(data, 3, elements);
+
+            //create resulting object
+            DG_FRAME_PTR result = make_shared<Kernel::DG_FRAME>(3, elements);
+
+            //convert data
+            *result = map;
+
+            delete[] data;
+
+            return result;
+        }
+
+        void PSTDFile::SaveNextDGResultsFrame(Kernel::DG_FRAME_PTR frame, Kernel::DG_FRAME_PTR cornerFrame)
         {
             using namespace Kernel;
             using namespace Eigen;
@@ -668,6 +703,15 @@ namespace OpenPSTD
             //save in the file
             this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA, {frameIndex}),
                               data.size() * sizeof(Kernel::DG_FRAME_UNIT), data.data());
+
+            //convert to a simple array
+            vector<DG_FRAME_UNIT> data2(cornerFrame->rows() * cornerFrame->cols());
+            Map<DG_FRAME> map2(data2.data(), cornerFrame->rows(), cornerFrame->cols());
+            map2 = *cornerFrame;
+
+            //save in the file
+            this->SetRawValue(CreateKey(PSTD_FILE_PREFIX_RESULTS_DG_FRAMEDATA_CORNER, {frameIndex}),
+                              data2.size() * sizeof(Kernel::DG_FRAME_UNIT), data2.data());
         }
 
         unsigned int PSTDFile::IncrementDGFrameCount()

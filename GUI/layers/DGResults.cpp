@@ -31,7 +31,7 @@
 
 #include "DGResults.h"
 
-OpenPSTD::GUI::DGResults::DGResults() : Layer(), i1(-1), i2(-1), i3(-1), valuesInitialized(false)
+OpenPSTD::GUI::DGResults::DGResults() : Layer(), valuesInitialized(false)
 {
 
 }
@@ -99,14 +99,12 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
 
     auto doc = m->documentAccess->GetDocument();
 
-    if (m->documentAccess->IsChanged() || i1 < 0)
+    if (m->documentAccess->IsChanged())
     {
         auto conf = doc->GetResultsSceneConf();
 
         auto X = doc->GetDGXPositions();
         auto Y = doc->GetDGYPositions();
-
-        time_t start = time(0);
 
         std::vector<QVector2D> positions;
         positions.reserve(conf->DGIndices.size() * 3);
@@ -129,15 +127,6 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
             positions.push_back(p1);
             positions.push_back(p2);
             positions.push_back(p3);
-
-            if(i1 < 0)
-            {
-                Kernel::VectorX<float> x = X->col(i);
-                Kernel::VectorX<float> y = Y->col(i);
-                i1 = GetClosest(p1, x, y);
-                i2 = GetClosest(p2, x, y);
-                i3 = GetClosest(p3, x, y);
-            }
         }
         triangles = conf->DGIndices.size();
 
@@ -145,25 +134,18 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
 
         f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
         f->glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(QVector2D), positions.data(), GL_STATIC_DRAW);
-
-        time_t end = time(0);
     }
 
     if(m->interactive->IsChanged())
     {
         if(m->interactive->visibleFrame >= 0 && m->interactive->visibleFrame < doc->GetResultsDGFrameCount())
         {
-            Kernel::DG_FRAME_PTR frame = doc->GetResultsDGFrame(m->interactive->visibleFrame);
+            Kernel::DG_FRAME_PTR frame = doc->GetResultsDGFrameCorner(m->interactive->visibleFrame);
 
-            std::vector<float> values;
-            values.reserve(frame->cols() * 3);
+            std::vector<float> values(frame->rows() * frame->cols());
+            Eigen::Map<Kernel::DG_FRAME> map(values.data(), frame->rows(), frame->cols());
 
-            for (int i = 0; i < frame->cols(); ++i)
-            {
-                values.push_back((*frame)(i1, i));
-                values.push_back((*frame)(i2, i));
-                values.push_back((*frame)(i3, i));
-            }
+            map = *frame;
 
             f->glBindBuffer(GL_ARRAY_BUFFER, this->valuesBuffer);
             f->glBufferData(GL_ARRAY_BUFFER, values.size() * sizeof(float), values.data(), GL_DYNAMIC_DRAW);
@@ -175,26 +157,4 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
 OpenPSTD::GUI::MinMaxValue OpenPSTD::GUI::DGResults::GetMinMax()
 {
     return this->minMaxPos;
-}
-
-int OpenPSTD::GUI::DGResults::GetClosest(QVector2D p, OpenPSTD::Kernel::VectorX<float> x,
-                                         OpenPSTD::Kernel::VectorX<float> y)
-{
-    if(x.rows() != y.rows())
-        return -1;
-    int result = -1;
-    //this calculation is done squared, so no sqrt has to be executed
-    float distanceResult;
-    for (int i = 0; i < x.rows(); ++i)
-    {
-        float xDiff = p.x()-x(i);
-        float yDiff = p.y()-y(i);
-        float distance = xDiff*xDiff + yDiff*yDiff;
-        if(result == -1 || distance < distanceResult)
-        {
-            distanceResult = distance;
-            result = i;
-        }
-    }
-    return result;
 }

@@ -66,9 +66,9 @@ namespace OpenPSTD
             }
         }
 
-        void CLIOutput::WriteDGFrame(int frame, DG_FRAME_PTR data)
+        void CLIOutput::WriteDGFrame(int frame, DG_FRAME_PTR data, DG_FRAME_PTR cornerData)
         {
-            _file->SaveNextDGResultsFrame(data);
+            _file->SaveNextDGResultsFrame(data, cornerData);
         }
     }
 }

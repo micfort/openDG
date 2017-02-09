@@ -148,7 +148,7 @@ void SimulateLOperation::Debug(std::string message)
     this->notifications->Debug(message);
 }
 
-void SimulateLOperation::WriteDGFrame(int frame, DG_FRAME_PTR data)
+void SimulateLOperation::WriteDGFrame(int frame, DG_FRAME_PTR data, Kernel::DG_FRAME_PTR cornerData)
 {
 
 }

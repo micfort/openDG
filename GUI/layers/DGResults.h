@@ -45,12 +45,9 @@ namespace OpenPSTD
             unsigned int positionsBuffer;
             unsigned int valuesBuffer;
             int triangles;
-            int i1, i2, i3;
             bool valuesInitialized;
 
             MinMaxValue minMaxPos;
-
-            int GetClosest(QVector2D p, Kernel::VectorX<float> x, Kernel::VectorX<float> y);
         public:
             DGResults();
 

@@ -69,7 +69,7 @@ namespace OpenPSTD
             void Callback(OpenPSTD::Kernel::CALLBACKSTATUS status, std::string message, int frame) override;
             void WriteFrame(int frame, int domain, OpenPSTD::Kernel::PSTD_FRAME_PTR data) override;
             void WriteSample(int startSample, int receiver, std::vector<float> data) override;
-            void WriteDGFrame(int frame, Kernel::DG_FRAME_PTR data) override;
+            void WriteDGFrame(int frame, Kernel::DG_FRAME_PTR data, Kernel::DG_FRAME_PTR cornerData) override;
             virtual void Fatal(std::string message) override;
             virtual void Error(std::string message) override;
             virtual void Warning(std::string message) override;

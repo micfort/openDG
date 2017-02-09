@@ -309,8 +309,9 @@ namespace OpenPSTD {
              * Return pressure data of scene to callback handler for the DG data.
              * @param frame: Positive integer corresponding to time step of data.
              * @param data: matrix of pressure data.
+             * @param data: matrix of pressure in the corners data.
              */
-            virtual void WriteDGFrame(int frame, DG_FRAME_PTR data) = 0;
+            virtual void WriteDGFrame(int frame, DG_FRAME_PTR data, DG_FRAME_PTR cornerData) = 0;
         };
 
         /**

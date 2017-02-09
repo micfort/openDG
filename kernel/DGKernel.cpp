@@ -47,7 +47,7 @@ void OpenPSTD::Kernel::DGKernel::initialize_kernel(std::shared_ptr<OpenPSTD::Ker
     SimpleDG2DBuilder<float> builder;
     builder.Elements = config->DGIndices;
     builder.Vertices = config->DGVertices;
-    this->system = builder.Build(6, DE);
+    this->system = builder.Build(6, DE); //if the order is changed, in WriteData the corner data also changes!!!!
 
     callbackLog->Info("Initialize RK");
     this->RK = std::make_shared<LSERK<float>>();
@@ -100,7 +100,14 @@ void OpenPSTD::Kernel::DGKernel::WriteData(int name, int index, MatrixX<float> s
         callback->Info("Calculated frame " + boost::lexical_cast<std::string>(index));
         DG_FRAME_PTR data = std::make_shared<DG_FRAME>(state.rows(), state.cols());
         *data = state+_pxTemp;
-        this->callback->WriteDGFrame(index, data);
+
+        //gets only the corners data
+        DG_FRAME_PTR dataCorner = std::make_shared<DG_FRAME>(3, data->cols());
+        dataCorner->row(0) = data->row(0);
+        dataCorner->row(1) = data->row(6);
+        dataCorner->row(2) = data->row(27);
+
+        this->callback->WriteDGFrame(index, data, dataCorner);
     }
 
 }
