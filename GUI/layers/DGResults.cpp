@@ -99,7 +99,7 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
         auto doc = m->documentAccess->GetDocument();
         if(m->interactive->visibleFrame >= 0 && m->interactive->visibleFrame < doc->GetResultsDGFrameCount())
         {
-            auto conf = doc->GetSceneConf();
+            auto conf = doc->GetResultsSceneConf();
             Kernel::DG_FRAME_PTR frame = doc->GetResultsDGFrame(m->interactive->visibleFrame);
             auto X = doc->GetDGXPositions();
             auto Y = doc->GetDGYPositions();
@@ -108,10 +108,11 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
             std::vector<float> values;
             //*3*2*2 -> every element exist from 3 points(assumption that they are triangles) and every edge has 2 points
             positions.reserve(conf->DGIndices.size() * 3);
-            positions.reserve(conf->DGIndices.size() * 3);
+            values.reserve(conf->DGIndices.size() * 3);
             MinMaxValue minMaxPos;
 
             triangles = 0;
+            int i1 = -1, i2 = -1, i3 = -1;
 
             for (int i = 0; i < conf->DGIndices.size(); ++i)
             {
@@ -136,9 +137,15 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
 
                     Kernel::VectorX<float> x = X->col(i);
                     Kernel::VectorX<float> y = Y->col(i);
-                    values.push_back((*frame)(GetClosest(p1, x, y), i));
-                    values.push_back((*frame)(GetClosest(p1, x, y), i));
-                    values.push_back((*frame)(GetClosest(p1, x, y), i));
+                    if(i1 < 0)
+                        i1 = GetClosest(p1, x, y);
+                    if(i2 < 0)
+                        i2 = GetClosest(p2, x, y);
+                    if(i3 < 0)
+                        i3 = GetClosest(p3, x, y);
+                    values.push_back((*frame)(i1, i));
+                    values.push_back((*frame)(i2, i));
+                    values.push_back((*frame)(i3, i));
                     triangles++;
                 }
             }
