@@ -99,46 +99,43 @@ void OpenPSTD::GUI::DGResults::UpdateScene(const std::shared_ptr<OpenPSTD::GUI::
 
     auto doc = m->documentAccess->GetDocument();
 
-    if (m->documentAccess->IsChanged())
+    if(m->interactive->visibleFrame >= 0 && m->interactive->visibleFrame < doc->GetResultsDGFrameCount())
     {
-        auto conf = doc->GetResultsSceneConf();
-
-        auto X = doc->GetDGXPositions();
-        auto Y = doc->GetDGYPositions();
-
-        std::vector<QVector2D> positions;
-        positions.reserve(conf->DGIndices.size() * 3);
-        MinMaxValue minMaxPos;
-
-        for (int i = 0; i < conf->DGIndices.size(); ++i)
+        if (m->documentAccess->IsChanged())
         {
-            //create the 3 points
-            QVector2D p1(conf->DGVertices[conf->DGIndices[i][0]](0),
-                         conf->DGVertices[conf->DGIndices[i][0]](1));
-            QVector2D p2(conf->DGVertices[conf->DGIndices[i][1]](0),
-                         conf->DGVertices[conf->DGIndices[i][1]](1));
-            QVector2D p3(conf->DGVertices[conf->DGIndices[i][2]](0),
-                         conf->DGVertices[conf->DGIndices[i][2]](1));
+            auto conf = doc->GetResultsSceneConf();
 
-            //update min max values
-            minMaxPos = MinMaxValue::Combine(minMaxPos, MinMaxValue(p1, p2));
+            std::vector<QVector2D> positions;
+            positions.reserve(conf->DGIndices.size() * 3);
+            MinMaxValue minMaxPos;
 
-            //add to vector
-            positions.push_back(p1);
-            positions.push_back(p2);
-            positions.push_back(p3);
+            for (int i = 0; i < conf->DGIndices.size(); ++i)
+            {
+                //create the 3 points
+                QVector2D p1(conf->DGVertices[conf->DGIndices[i][0]](0),
+                             conf->DGVertices[conf->DGIndices[i][0]](1));
+                QVector2D p2(conf->DGVertices[conf->DGIndices[i][1]](0),
+                             conf->DGVertices[conf->DGIndices[i][1]](1));
+                QVector2D p3(conf->DGVertices[conf->DGIndices[i][2]](0),
+                             conf->DGVertices[conf->DGIndices[i][2]](1));
+
+                //update min max values
+                minMaxPos = MinMaxValue::Combine(minMaxPos, MinMaxValue(p1, p2));
+
+                //add to vector
+                positions.push_back(p1);
+                positions.push_back(p2);
+                positions.push_back(p3);
+            }
+            triangles = conf->DGIndices.size();
+
+            this->minMaxPos = minMaxPos;
+
+            f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
+            f->glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(QVector2D), positions.data(), GL_STATIC_DRAW);
         }
-        triangles = conf->DGIndices.size();
 
-        this->minMaxPos = minMaxPos;
-
-        f->glBindBuffer(GL_ARRAY_BUFFER, this->positionsBuffer);
-        f->glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(QVector2D), positions.data(), GL_STATIC_DRAW);
-    }
-
-    if(m->interactive->IsChanged())
-    {
-        if(m->interactive->visibleFrame >= 0 && m->interactive->visibleFrame < doc->GetResultsDGFrameCount())
+        if (m->interactive->IsChanged())
         {
             Kernel::DG_FRAME_PTR frame = doc->GetResultsDGFrameCorner(m->interactive->visibleFrame);
 
