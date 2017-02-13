@@ -14,43 +14,16 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="9" column="1">
-    <widget class="QDoubleSpinBox" name="sbCFLNumerRKScheme">
+   <item row="3" column="1">
+    <widget class="QDoubleSpinBox" name="sbRenderTime">
      <property name="minimum">
-      <double>0.100000000000000</double>
+      <double>0.010000000000000</double>
      </property>
      <property name="maximum">
-      <double>10000.000000000000000</double>
+      <double>10.000000000000000</double>
      </property>
-    </widget>
-   </item>
-   <item row="11" column="0" colspan="4">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Grid spacing</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QDoubleSpinBox" name="sbMaxFreq">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimum">
-      <double>171.500000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>17150.000000000000000</double>
+     <property name="singleStep">
+      <double>0.050000000000000</double>
      </property>
     </widget>
    </item>
@@ -81,17 +54,23 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Window size</string>
+   <item row="1" column="3">
+    <widget class="QDoubleSpinBox" name="sbMaxFreq">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="minimum">
+      <double>171.500000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>17150.000000000000000</double>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_5">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_8">
      <property name="text">
-      <string>Render time</string>
+      <string>PML cells</string>
      </property>
     </widget>
    </item>
@@ -108,10 +87,10 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_8">
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>PML cells</string>
+      <string>Render time</string>
      </property>
     </widget>
    </item>
@@ -122,10 +101,10 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="label_11">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Sound speed</string>
+      <string>Window size</string>
      </property>
     </widget>
    </item>
@@ -136,13 +115,6 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="label_12">
-     <property name="text">
-      <string>CFL numer RK Scheme</string>
-     </property>
-    </widget>
-   </item>
    <item row="10" column="0">
     <widget class="QLabel" name="label_13">
      <property name="text">
@@ -150,35 +122,17 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
-    <widget class="QDoubleSpinBox" name="sbSoundSpeed">
-     <property name="decimals">
-      <number>1</number>
-     </property>
-     <property name="minimum">
-      <double>300.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>400.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>5.000000000000000</double>
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_11">
+     <property name="text">
+      <string>Sound speed</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
-    <widget class="QSpinBox" name="sbSaveEveryNth">
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>1000</number>
-     </property>
-     <property name="value">
-      <number>1</number>
-     </property>
-     <property name="displayIntegerBase">
-      <number>10</number>
+   <item row="9" column="0">
+    <widget class="QLabel" name="label_12">
+     <property name="text">
+      <string>CFL numer RK Scheme</string>
      </property>
     </widget>
    </item>
@@ -221,16 +175,62 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QDoubleSpinBox" name="sbRenderTime">
+   <item row="10" column="1">
+    <widget class="QSpinBox" name="sbSaveEveryNth">
      <property name="minimum">
-      <double>0.010000000000000</double>
+      <number>1</number>
      </property>
      <property name="maximum">
-      <double>10.000000000000000</double>
+      <number>1000</number>
+     </property>
+     <property name="value">
+      <number>1</number>
+     </property>
+     <property name="displayIntegerBase">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QDoubleSpinBox" name="sbCFLNumerRKScheme">
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QDoubleSpinBox" name="sbSoundSpeed">
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="minimum">
+      <double>300.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>400.000000000000000</double>
      </property>
      <property name="singleStep">
-      <double>0.050000000000000</double>
+      <double>5.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Grid spacing</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
@@ -267,6 +267,20 @@
      </property>
      <property name="maximum">
       <double>115.709999999999994</double>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>DG order of calculation</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QSpinBox" name="sbDGOrder">
+     <property name="minimum">
+      <number>1</number>
      </property>
     </widget>
    </item>

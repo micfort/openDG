@@ -349,8 +349,9 @@ namespace OpenPSTD
                     ("bandwidth", value<float>(), "help")
                     ("spectral-interpolation", value<float>(), "help")
                     ("wave-length", value<float>(), "help")
-                    ("time-step", value<float>(), "help")
+                    ("time-step", value<float>(), "the time step used in the PSTD algorithm")
                     ("rk-coefficients", value<std::vector<float>>()->multitoken(), "help")
+                    ("dg-order", value<int>(), "The order of the DG calculations. The minumum of the DG order is 1.")
                 //todo fix these arguments
                 //("window", value<Eigen::ArrayXf>(), "help")
                     ;
@@ -379,6 +380,7 @@ namespace OpenPSTD
             //if(input.count("time-step") > 0) model->Settings.SetTimeStep(input["time-step"].as<float>());
             if (input.count("rk-coefficients") > 0)
                 model->Settings.SetRKCoefficients(input["rk-coefficients"].as<std::vector<float>>());
+            if (input.count("dg-order") > 0) model->Settings.SetDGOrder(input["dg-order"].as<int>());
             //if(input.count("window") > 0) model->Settings.SetWindow(input["window"].as<Eigen::ArrayXf>());
         }
     }

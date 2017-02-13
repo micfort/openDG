@@ -73,6 +73,8 @@ namespace OpenPSTD {
             int SaveNth;
             /// Window coefficients for attenuating the sound
             Eigen::ArrayXf window;
+            /// The order of calculations of DG
+            int DGOrder;
 
         public:
 
@@ -93,6 +95,7 @@ namespace OpenPSTD {
                 ar & spectral_interpolation;
                 ar & PMLCells;
                 ar & SaveNth;
+                ar & DGOrder;
             }
 
             float GetGridSpacing();
@@ -154,6 +157,10 @@ namespace OpenPSTD {
             std::vector<float> GetRKCoefficients();
 
             void SetRKCoefficients(std::vector<float> coef);
+
+            int GetDGOrder();
+
+            void SetDGOrder(int order);
         };
 
         /**

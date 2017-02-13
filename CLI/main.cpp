@@ -215,6 +215,7 @@ namespace OpenPSTD
             {
                 std::cout << coef[i] << " ";
             }
+            std::cout << "  DG Order: " << SceneConf->Settings.GetDGOrder() << std::endl;
             std::cout << std::endl;
 
             std::cout << std::endl;

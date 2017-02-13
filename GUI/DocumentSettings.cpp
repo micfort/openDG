@@ -50,6 +50,7 @@ namespace OpenPSTD
             ui->sbSoundSpeed->setValue(settings.GetSoundSpeed());
             ui->sbCFLNumerRKScheme->setValue(settings.GetFactRK());
             ui->sbSaveEveryNth->setValue(settings.GetSaveNth());
+            ui->sbDGOrder->setValue(settings.GetDGOrder());
             this->settings = settings;
         }
 
@@ -64,6 +65,7 @@ namespace OpenPSTD
             settings.SetSoundSpeed(ui->sbSoundSpeed->value());
             settings.SetFactRK(ui->sbCFLNumerRKScheme->value());
             settings.SetSaveNth(ui->sbSaveEveryNth->value());
+            settings.SetDGOrder(ui->sbDGOrder->value());
 
             return settings;
         }

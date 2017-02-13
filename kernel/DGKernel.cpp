@@ -47,7 +47,7 @@ void OpenPSTD::Kernel::DGKernel::initialize_kernel(std::shared_ptr<OpenPSTD::Ker
     SimpleDG2DBuilder<float> builder;
     builder.Elements = config->DGIndices;
     builder.Vertices = config->DGVertices;
-    this->system = builder.Build(6, DE); //if the order is changed, in WriteData the corner data also changes!!!!
+    this->system = builder.Build(config->Settings.GetDGOrder(), DE); //if the order is changed, in WriteData the corner data also changes!!!!
 
     callbackLog->Info("Initialize RK");
     this->RK = std::make_shared<LSERK<float>>();

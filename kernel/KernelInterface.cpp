@@ -141,6 +141,16 @@ namespace OpenPSTD {
             this->rk_coefficients = coef; //Todo: Set somewhere.
         }
 
+        int PSTDSettings::GetDGOrder()
+        {
+            return this->DGOrder;
+        }
+
+        void PSTDSettings::SetDGOrder(int order)
+        {
+            this->DGOrder = order;
+        }
+
         float DomainConf::GetAbsorption(PSTD_DOMAIN_SIDE side) {
             switch (side) {
                 case PSTD_DOMAIN_SIDE_TOP:
@@ -206,6 +216,7 @@ namespace OpenPSTD {
             conf->Settings.SetGridSpacing(grid_spacing);
             conf->Settings.SetPMLCells(50);
             conf->Settings.SetSaveNth(1);
+            conf->Settings.SetDGOrder(6);
 
             float band_width = (float) (3 * 1e-6 * (sound_speed / grid_spacing) * (sound_speed / grid_spacing));
             conf->Settings.SetBandWidth(band_width);
@@ -259,6 +270,7 @@ namespace OpenPSTD {
             conf->Settings.SetGridSpacing(0);
             conf->Settings.SetPMLCells(0);
             conf->Settings.SetSaveNth(0);
+            conf->Settings.SetDGOrder(0);
 
             conf->Settings.SetBandWidth(0);
             // RK coeffs now hardcoded in kernel functions
